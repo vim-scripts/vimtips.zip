@@ -1,0 +1,3543 @@
+*vimtips.txt*
+This file comes from the Vim Online tip database.  
+These tips were downloaded on Fri, 21 Sep 2001 18:59:56 -0700
+More tips can be found at http://vim.sf.net/tips
+A new tip file can be downloaded from http://vim.sf.net/tips/download.php
+
+Thanks for using vim online.
+
+
+
+VimTip 1: the super star
+http://vim.sf.net/tips/tip.php?tip_id=1
+
+When a discussion started about learning vim on the vim list Juergen Salk mentioned the "*" key as something that he wished he had know earlier. When I read the mail I had to go help on what the heck the "*" did. I also wish I had known earlier...
+
+Using the "*" key while in normal mode searches for the word under the cursor.
+
+If that doesn't save you a lot of typing, I don't know what will.
+
+
+
+
+
+
+VimTip 2: easy edit of files in the same directory
+http://vim.sf.net/tips/tip.php?tip_id=2
+
+It was often frustrating when I would open a file deep in the code tree and then realize I wanted to open another file in that same directory. Douglas Potts taught me a nice way to do this. Add the following snipit to your vimrc:
+
+"   Edit another file in the same directory as the current file
+"   uses expression to extract path from current file's path
+"  (thanks Douglas Potts)
+if has("unix")
+    map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
+else
+    map ,e :e <C-R>=expand("%:p:h") . "\" <CR>
+endif
+
+Then when you type ,e in normal mode you can use tab to complete to the file. You can also expand this to allow for spitting, etc. Very very nice.
+
+
+
+
+
+
+VimTip 3: use vim to quickly compile java files
+http://vim.sf.net/tips/tip.php?tip_id=3
+
+For a number of years I used vim on an SGI box. When I left my job at SGI I went to a company that developed on PCs. For 2 years I used IDEs. I was unhappy. I was frustrated. I couldn't figure out why. (Beyond my machine crashing twice a day.) Finally I upgraded to windows 2000 (kind of stable!) and started using vim as an IDE. All was good. Here is how you use vim to compile your java:
+
+1. While I'm sure this works with javac, javac is slow slow slow. So download the Jikes complier first. (Jikes is from ibm, search on google for jikes and you will find it..available on most platforms.)
+
+2. Add the following to your vimrc:
+
+set makeprg=jikes -nowarn -Xstdout +E %
+set errorformat=%f:%l:%c:%*\d:%*\d:%*\s%m 
+
+3. When you are editing a java file type :make and it will compile the current file and jump you to the first error in the file (if any). Read ":help quickfix" for how to move between errors.
+
+To setup your classpath environment either launch gvim from a shell that has your classpath/path setup or use the "let" command to configure it in your vimrc.
+
+
+
+
+
+
+VimTip 4: Any word completion
+http://vim.sf.net/tips/tip.php?tip_id=4
+
+Either when programming or writing, I tend to have some identifiers or words that I use all the time. By sheer accident, I noticed the 'ctrl-n' command, that will attempt to complete the word under the cursor. Hit it once, and it will try to complete it with the first match in the current file. If there is no match, it will (at least in the case of C code) search through all files included from the current one. Repeated invocations will cycle through all found matches.
+
+
+
+
+
+
+VimTip 5: Quickly searching for a word
+http://vim.sf.net/tips/tip.php?tip_id=5
+
+
+To search for a word under the cursor in the current file you
+can use either the "*" or "#" keys.
+
+The "*" key will search for the word from the current cursor 
+position to the end of the file. The "#" key will search for the 
+word from the current cursor position to the top of the file.
+
+Note that the above two keys will search for the whole word and not
+the partial word.  This is equivalent to using the <word> pattern
+in the search commands (/ and ?).
+
+To search for partial matches, you can use the "g*" and "g#" key
+sequence.
+
+You can also use the mouse to search for a word.  This will only
+work in the GUI version of VIM (gvim) or a console version
+of VIM in an xterm which accepts a mouse. Also, the 'mousemodel'
+should be set to 'extend'.  Add the following line to your .vimrc:
+
+set mousemodel=extend
+
+To search for a word under the cursor from the current cursor
+position to the end of the file, press the shift key and click
+on the word using the left mouse button.  To search in the opposite
+direction, press the shift key and click on the word using the
+the right mouse button.
+
+To get more help on these, use
+
+:help *
+:help #
+:help g*
+:help g#
+:help <S-LeftMouse>
+:help <S-RightMouse>
+
+
+
+
+
+
+
+VimTip 6: Using the % key
+http://vim.sf.net/tips/tip.php?tip_id=6
+
+
+The % key can be used
+
+1. To jump to a matching opening or closing parenthesis, square 
+   bracket or a curly brace i.e. ([{}])
+2. To jump to start or end of a C-style comment /* */.  
+3. To jump to a matching #if, #ifdef, #else, #elif, #endif C 
+   preprocessor conditionals.
+
+To get more information about this, do
+
+             :help %
+
+The % key can be extended to support other matching pairs by
+modifying the "matchpairs" option.  Read the help on
+
+             :help matchpairs
+
+
+
+
+
+
+
+VimTip 7: Jumping to the start and end of a code block
+http://vim.sf.net/tips/tip.php?tip_id=7
+
+
+To jump to the beginning of a C code block (while, switch, if etc),
+use the [{ command.
+
+To jump to the end of a C code block (while, switch, if etc),
+use the ]} command.
+
+The above two commands will work from anywhere inside the code
+block.
+
+To jump to the beginning of a parenthesis use the [( command.
+
+To jump to the end of a parenthesis use the ]) command.
+
+To get more help on these commands, do
+
+:help [{
+:help ]}
+:help [(
+:help ])
+
+
+
+
+
+
+
+VimTip 8: Jumping to the declaration of a local/global variable
+http://vim.sf.net/tips/tip.php?tip_id=8
+
+
+'gd' command: 
+To jump to the declaration of a local variable in a C program, 
+position the cursor on the name of the variable and use the
+gd command.
+
+'gD' command:
+To jump to the declaration of a global variable in a C program, 
+position the cursor on the name of the variable and use the
+gD command.
+
+
+
+
+
+
+VimTip 9: Displaying a variable/macro definition
+http://vim.sf.net/tips/tip.php?tip_id=9
+
+
+To display the definition of a variable, place the cursor on the
+variable and use the [i command.  To display a macro definition,
+place the cursor on the macro name and use the [d command.
+Note that these commands will work most of the time (not all the
+time).  To get more help on these commands, use
+
+:help [i
+:help [d
+
+
+
+
+
+
+VimTip 10: Jumping to previosuly visited locations in a file
+http://vim.sf.net/tips/tip.php?tip_id=10
+
+
+Vim remembers all the locations visited by you in a file in a session.
+You can jump to the older locations by pressing the Ctrl-O key.  You
+can jump to the newer locations by pressing the Ctrl-I or the <Tab>
+key.
+
+To get more help on these keys, use
+
+:help CTRL-O
+:help CTRL-I
+:help jump-motions
+
+
+
+
+
+
+
+VimTip 11: Completing words quicky in insert mode
+http://vim.sf.net/tips/tip.php?tip_id=11
+
+
+In Insert mode, press the Ctrl-p or Ctrl-n key to complete part of 
+a word that has been typed.
+
+This is useful while typing C programs to complete long variable and
+function names.  This also helps in avoiding typing mistakes.
+
+Note that using the 'complete' option, you can complete keywords
+defined in one of the include files, tag file, etc.
+
+To get more help on this, use
+
+:help i_Ctrl-N
+:help i_Ctrl-P
+:help ins-completion
+:help complete
+
+
+
+
+
+
+
+VimTip 12: Converting tabs to spaces
+http://vim.sf.net/tips/tip.php?tip_id=12
+
+
+To insert space characters whenever the tab key is pressed, set the
+'expandtab' option:
+
+        set expandtab
+
+With this option set, if you want to enter a real tab character use
+Ctrl-V<Tab> key sequence.
+
+To control the number of space characters that will be inserted when
+the tab key is pressed, set the 'tabstop' option.  For example, to
+insert 4 spaces for a tab, use:
+
+        set tabstop=4
+
+After the 'expandtab' option is set, all the new tab characters entered
+will be changed to spaces.  This will not affect the existing tab
+characters.  To change all the existing tab characters to match the
+current tab settings, use
+
+        :retab
+
+To change the number of space characters inserted for indentation, use
+the 'shiftwidth' option:
+
+        set shiftwidth=4
+
+For example, to get the following coding style,
+        - No tabs in the source file
+        - All tab characters are 4 space characters
+
+use the following set of options:
+
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+
+Add the above settings to your .vimrc file.
+
+To get more help on these options, use
+:help tabstop
+:help shiftwidth
+:help expandtab
+
+
+
+
+
+
+
+VimTip 13: Incremental search
+http://vim.sf.net/tips/tip.php?tip_id=13
+
+
+To move the cursor to the matched string, while typing the search
+string, set the following option in the .vimrc file:
+
+        set incsearch
+
+You can complete the search by pressing the Enter key.  To cancel
+the search, press the escape key.
+
+
+
+
+
+
+
+VimTip 14: Highlighting all the search pattern matches
+http://vim.sf.net/tips/tip.php?tip_id=14
+
+
+To highlight all the search pattern matches in a file set the
+following option:
+
+        :set hlsearch
+
+After this option is set, if you search for a pattern, all the
+matches in the file will be highlighted in yellow.
+
+To disable the highlighting temporarily, use the command
+
+        :nohlsearch
+
+This command will remove the highlighting for the current search.
+The highlighting will come back for the next search.
+
+To disable the highlighting completely, set the following option:
+
+        :set nohlsearch
+
+By default, the hlsearch option is turned off.
+
+To get more help on this option, use
+
+:help 'hlsearch'
+:help :nohlsearch
+
+
+
+
+
+
+
+VimTip 15: Displaying status line always
+http://vim.sf.net/tips/tip.php?tip_id=15
+
+
+To display the status line always, set the following option in
+your .vimrc file:
+
+        set laststatus=2
+
+The advantage of having the status line displayed always is, you
+can see the current mode, file name, file status, ruler, etc.
+
+To get more help on this, use
+
+:help laststatus
+
+
+
+
+
+
+
+VimTip 16: Avoiding the "Hit ENTER to continue" prompts
+http://vim.sf.net/tips/tip.php?tip_id=16
+
+
+To avoid the "Hit ENTER to continue" prompt, use the 'shortmess'
+option.  Add the following line to your .vimrc file:
+
+    set shortmess=a
+
+Also, you can increase the height of the command line to 2
+
+    set cmdheight=2
+
+The default command height is 1.
+
+To get more help on these options, use
+
+:help hit-enter
+:help shortmess
+:help cmdheight
+
+
+
+
+
+
+
+VimTip 17: Erasing previosuly entered characters in insert mode
+http://vim.sf.net/tips/tip.php?tip_id=17
+
+
+In insert mode, to erase previously entered characters, set the
+following option:
+
+        set backspace=2
+
+By default, this option is empty.  If this option is empty, in
+insert mode, you can not erase characters entered before this
+insert mode started.  This is the standard Vi behavior.
+
+To get more help on this, use
+
+:help 'backspace'
+
+
+
+
+
+
+
+VimTip 18: Cleanup your HTML
+http://vim.sf.net/tips/tip.php?tip_id=18
+
+From Johannes Zellner on the vim list:
+
+You can use vim's makeprg and equalprg to clean up HTML. First download html tidy from http://www.w3.org/People/Raggett/tidy/. Then use the following commands.
+
+vim6?
+exe 'setlocal equalprg=tidy -quiet -f '.&errorfile
+setlocal makeprg=tidy -quiet -e %
+
+vim5?
+exe 'set equalprg=tidy -quiet -f '.&errorfile
+set makeprg=tidy -quiet -e %
+
+At this point you can use make to clean up the full file or you can use = to clean up sections.
+
+:help =
+:help equalprg
+:help makeprg
+
+
+
+
+
+
+
+
+VimTip 19: line numbers...
+http://vim.sf.net/tips/tip.php?tip_id=19
+
+I have started doing all my code reviews on a laptop because of the number command.
+
+:set number will put line numbers along the left side of a window
+
+:help number
+
+
+
+
+
+
+VimTip 20: Are *.swp and *~ files littering your working directory?
+http://vim.sf.net/tips/tip.php?tip_id=20
+
+Have you ever been frustrated at swap files and backups cluttering
+up your working directory? 
+
+Untidy:
+  ons.txt
+  ons.txt~
+  README
+  README~
+  tester.py
+  tester.py~
+
+Here are a couple of options that can help:
+
+  set   backupdir=./.backup,.,/tmp
+  set   directory=.,./.backup,/tmp
+
+This way, if you want your backups to be neatly grouped, just 
+create a directory called '.backup' in your working directory. 
+Vim will stash backups there. The 'directory' option controls
+where swap files go. If your working directory is not writable,
+Vim will put the swap file in one of the specified places.
+
+
+
+
+
+
+VimTip 21: easy pasting to windows apps
+http://vim.sf.net/tips/tip.php?tip_id=21
+
+In Vim, the unnamed register is the " register, and the Windows
+Clipboard is the * register. This means that if you yank something,
+you have to yank it to the * register if you want to paste it into
+a Windows app. If this is too much trouble, set the 'clipboard' 
+option to 'unnamed'. Then you always yank to *.
+
+So pasting to windows apps doesn't require prefixing "* :
+
+  set   clipboard=unnamed
+
+
+
+
+
+
+
+VimTip 22: handle common typos for :commands
+http://vim.sf.net/tips/tip.php?tip_id=22
+
+I frequently hold the shift key for too long when typing, for instance :wq, and end up with :Wq.  Vim then whines "Not an editor command: Wq"
+
+In my .vimrc, I have taught vim my common typos:
+command! Q  quit
+command! W  write
+command! Wq wq
+" this one won't work, because :X is already a built-in command
+command! X  xit
+
+
+
+
+
+
+VimTip 23: Vim xterm title
+http://vim.sf.net/tips/tip.php?tip_id=23
+
+Check out your .vimrc. If 'set notitle' is an entry, comment it out with a quotation mark ("). Now your xterm should inherit the title from Vim.            e.g. 'Vim - ~/.vimrc'. This can be quite nice when programming and editing lots of files at the same time.
+by [jonasbn@wanadoo.dk]
+
+
+
+
+
+
+VimTip 24: changing the default syntax highlighting
+http://vim.sf.net/tips/tip.php?tip_id=24
+
+     Here are some pointers to the vim documentation.  Notice that the mechanism is different in vim 6.0 and vim 5.x.
+
+1. I want *.foo files to be highlighted like HTML files.
+
+:help new-filetype  http://www.vim.org/html/autocmd.html#new-filetype
+
+2. I want to define a syntax file for *.bar files.  Read the above and also
+
+:help mysyntaxfile  http://www.vim.org/html/syntax.html#mysyntaxfile
+
+3. I want to make a few changes to the existing syntax highlighting.  Depending on the x in 5.x, either read the above and page down a few screens, or you may be able to skip right to
+
+:help mysyntaxfile-add  http://www.vim.org/html/syntax.html#mysyntaxfile-add
+
+4. I want to change some of the colors from their defaults.  Again, read
+
+:help mysyntaxfile  http://www.vim.org/html/syntax.html#mysyntaxfile
+
+
+
+
+
+
+VimTip 25: color highlighting on telnet (esp w/ SecureCRT)
+http://vim.sf.net/tips/tip.php?tip_id=25
+
+The following settings in .vimrc will enable color highlighting when using SecureCRT and may work on other telnet packages. The terminal type should be selected as ANSI and color enabled.
+
+
+if !has("gui_running")
+set t_Co=8
+set t_Sf=^[[3%p1%dm
+set t_Sb=^[[4%p1%dm
+endif
+
+
+The ^[ is entered as "<ctrl-v><esc>" 
+
+
+
+
+
+
+
+
+VimTip 26: Getting rid of ^M - mixing dos and unix
+http://vim.sf.net/tips/tip.php?tip_id=26
+
+If you work in a mixed environment you will often open files that have ^M's in them. An example would be this:
+
+------------------------------------------------------------------
+import java.util.Hashtable; ^M
+import java.util.Properties; ^Mimport java.io.IOException;
+import org.xml.sax.AttributeList; ^M
+import org.xml.sax.HandlerBase; ^Mimport org.xml.sax.SAXException;
+
+/**^M
+  * XMLHandler: This class parses the elements contained^M
+  * within a XML message and builds a Hashtable^M
+
+[snip]
+------------------------------------------------------------------
+
+Notice that some programs are not consistent in the way they insert the line breaks so you end up with some lines that have both a carrage return and a ^M and some lines that have a ^M and no carrage return (and so blend into one). There are two steps to clean this up.
+
+1. replace all extraneous ^M:
+
+:%s/^M$//g
+
+BE SURE YOU MAKE the ^M USING "CTRL-V CTRL-M" NOT BY TYPING "CARROT M"! This expression will replace all the ^M's that have carriage returns after them with nothing. (The dollar ties the search to the end of a line)
+
+2. replace all ^M's that need to have carriage returns:
+
+:%s/^M//g
+
+Once again: BE SURE YOU MAKE the ^M USING "CTRL-V CTRL-M" NOT BY TYPING "CARROT M"! This expression will replace all the ^M's that didn't have carriage returns after them with a carriage return.
+
+Voila! Clean file. Map this to something if you do it frequently.
+
+:help ffs - for more info on file formats
+
+thanks to jonathan merz, douglas potts, and benji fisher
+
+
+
+
+
+
+
+VimTip 27: Convert hex to dec
+http://vim.sf.net/tips/tip.php?tip_id=27
+
+when you check the output of objdump, you'll confused by the $0xFFFFFFc operand, this function translate the hexcamal to decimal.
+function! Hex2Dec()
+    let lstr = getline(".")
+    let hexstr = matchstr(lstr, '0x[a-f0-9]+')
+    while hexstr != ""
+        let hexstr = hexstr + 0
+        exe 's#0x[a-f0-9]+#'.hexstr."#"
+        let lstr = substitute(lstr, '0x[a-f0-9]+', hexstr, "")
+        let hexstr = matchstr(lstr, '0x[a-f0-9]+')
+    endwhile
+endfunction
+usage:
+5,8call Hex2Dec()
+
+
+
+
+
+
+
+VimTip 28: add a line-number to every line without cat or awk alike utilities.
+http://vim.sf.net/tips/tip.php?tip_id=28
+
+With Unix-like environment, you can use cat or awk to generate a line number easily, because vim has a friendly interface with shell, so everything work in vim as well as it does in shell.
+:%!call -n
+or
+:%!awk '{print NR,$0}'
+
+But, if you use vim in MS-DOS, of win9x, win2000, you loss these tookit.
+here is a very simple way to archive this only by vim:
+fu! LineIt()
+  exe ":s/^/".line(".")."/"
+endf
+
+Well, a sequence composed with alphabet is as easy as above:
+  exe "s/^/".nr2char(line("."))."/"
+
+
+
+
+
+
+
+VimTip 29: reverse all the line with only 7 keystroke in vim
+http://vim.sf.net/tips/tip.php?tip_id=29
+
+:g/^/m0
+well, 
+1. : bring you to command-line mode(also known as ex-mode) from normal-mode(also known as command mode).
+2. g means you'll take an action through the whole file, generally perform a search, `v' also perform a search but it match the line not match the canonical expression.
+3. / begins the regular express
+4. ^ is a special character respect the start of a line.
+5. the second / ends the regular express and indicate that the remains is action to do.
+6. m means move, `t` and `co' for copy, `d' for delete
+7. 0 is the destination line.
+
+you can use 
+:g/regexp/t$
+to filter all lines and pick the match line together and copy them to the end of the buffer or
+:g/regexp/y A
+to put them into a register(not eax, ebx...)
+
+
+
+
+
+
+VimTip 30: Increasing or decreasing numbers
+http://vim.sf.net/tips/tip.php?tip_id=30
+
+To increase a number under or nearest to the right of the cursor, go to Normal mode and type:
+    Ctrl-A
+
+To decrease, type:
+    Ctrl-X
+
+Using this in a macro simplifies generating number sequences a lot.
+
+
+
+
+
+
+
+VimTip 31: Find and Replace
+http://vim.sf.net/tips/tip.php?tip_id=31
+
+To find and replace one or more occurences of a given text pattern with a
+new text string, use the s[ubstitute] command.
+
+There are a variety of options, but these are what you most probably want:
+
+:%s/foo/bar/g           find each occurance of 'foo' and replace it with 'bar' without asking for confirmation
+
+:%s/foo/bar/gc          find each occurance of 'foo' and replace it with 'bar' asking for confirmation first
+
+:%s/<foo>/bar/gc      find (match exact word only) and replace each occurance of 'foo' with 'bar'
+
+:%s/foo/bar/gci         find (case insensitive) and replace each occurance of 'foo' with 'bar'
+
+:%s/foo/bar/gcI         find (case sensitive) and replace each occurance of 'foo' with 'bar'
+
+
+NB: Without the 'g' flag, replacement occurs only for the first occurrence in each line.
+
+For a full description and some more interesting examples of the substitute command refer to
+
+:help substitute
+
+See also:
+
+:help cmdline-ranges
+:help pattern
+:help gdefault
+
+
+
+
+
+
+
+VimTip 32: Write your own vim function(scripts)
+http://vim.sf.net/tips/tip.php?tip_id=32
+
+compare to C and shell(bash), herein is some vim specifics about vim-script:
+1. A function name must be capitalized.
+   hex2dec is invalid
+   Hex2dec is valid
+   while in c and shell(bash), both lowercase and uppercase is allowed.
+2. how to reference the parameters
+   fu! Hex2dec(var1, var2)
+    let str=a:var1
+    let str2=a:var2
+   you must prefix the parameter name with "a:", and a:var1 itself is read-only
+   in c, you reference the parameter directly and the parameter is writable.
+3. how to implement variable parameter
+   fu! Hex2dec(fixpara, ...)
+     a:0 is the real number of the variable parameter when you invoke the function, with :Hex2dec("asdf", 4,5,6), a:0=3, and a:1=4 a:2=5 a:3=6
+   you can combine "a:" and the number to get the value
+   while i<a:0
+     exe "let num=a:".i
+     let i=i+1
+   endwhile
+   in c, the function get the real number by checking the additional parameter such as printf family, or by checking the special value such as NULL
+4. where is the vim-library
+  yes, vim has its own function-library, just like *.a in c
+  :help functions
+5. can I use += or ++ operator?
+  Nop, += and ++ (and -=, -- and so on)operator gone away in vim.
+6. How can I assign a value to a variables and fetch its value?
+   let var_Name=value
+   let var1=var2
+   like it does in c, except you must use let keyword
+7. Can I use any ex-mode command in a function?
+  As I know, yes, just use it directly, as if every line you type appears in the familar : 
+8. Can I call a function recurse?
+  Yes, but use it carefully to avoid infinte call.
+9. Can I call another function in a function?
+  Course, like C does.
+10. Must I compile the function?
+   No, you needn't and you can't, just :so script_name, after this you can call the function freely.
+11. Is it has integer and char or float data type?
+   No, like perl, vim script justify the variable type depend upon the context
+   :let a=1
+   :let a=a."asdf"
+   :echo a
+   you'll get `1asdf'
+   :let a=1
+   :let a=a+2
+   :echo a
+   you'll get 3
+   But it differs from perl.
+12. Must I append a `;' in every statement?
+   No, never do that.
+   ; is required in C, and optional in shell for each statement in a alone line.
+   But is forbidden in vim.
+   if you want combine servals statement in one single line, use `|'.
+   Take your mind that every statement appears in function should be valid in ex-mode(except for some special statement).
+
+
+
+
+
+
+VimTip 33: toggle off the line-number when enter on-line help
+http://vim.sf.net/tips/tip.php?tip_id=33
+
+I like the line-number for myself editing. But I hate it in on-line help page because it force the screen wrapped.
+:au filetype help :se nonu
+
+
+
+
+
+
+
+VimTip 34: control the position of the new window
+http://vim.sf.net/tips/tip.php?tip_id=34
+
+:se splitbelow 
+make the new window appears below the current window.
+:se splitright
+make the new window appears in right.(only 6.0 version can do a vsplit)
+
+
+
+
+
+
+VimTip 35: For programmer: translate // style comment to /*  */and vice vesa
+http://vim.sf.net/tips/tip.php?tip_id=35
+
+the `|' concatenate servals ex-command in one line.
+It's the key to translate // style comments to /* */ style
+:g#^s{-}//#s##/*# | s#$#*/#
+
+the `|' keep the current line matchs ^s{-}// to perform s#$#*/
+
+/* ... */ ---> //style
+:g#/*(.{-})*/#//1#
+
+/* ....
+   ....
+   .....
+*/ 
+=====> 
+//......
+//......
+//......
+style:
+? Anyone implement it?
+
+
+
+
+
+
+VimTip 36: Using Gnu-info help in vim
+http://vim.sf.net/tips/tip.php?tip_id=36
+
+K in normal bring you the man page about the keyword under current cursor.
+:nnoremap <F1> :exe ":!info ".expand("<cword>")
+Now press F1 while the cursor is hold by a keyword such as printf will bring you to Gnu-info help page
+:h <F1>
+:h nnoremap
+
+
+
+
+
+
+VimTip 37: The basic operation about vim-boolean optionals
+http://vim.sf.net/tips/tip.php?tip_id=37
+
+:set number
+switch the number on
+:set nonumber
+switch it off
+:set invnumber 
+or 
+:set number!
+switch it inverse against the current setting
+:set number&
+get the default value vim assums.
+
+replace number with any legal vim-boolean optionals, they all works well.
+for vim-non-boolean optionals
+:set optional& 
+also works properly.
+
+
+
+
+
+
+
+VimTip 38: Cursor one line at a time when :set wrap
+http://vim.sf.net/tips/tip.php?tip_id=38
+
+If your tierd of the cursor jumping past 5 lines when :set wrap then add these mappings to you vimrc file.
+
+nnoremap j gj
+nnoremap k gk
+vnoremap j gj
+vnoremap k gk
+nnoremap <Down> gj
+nnoremap <Up> gk
+vnoremap <Down> gj
+vnoremap <Up> gk
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
+
+What they do is remap the cursor keys to use there `g' equvilant. See :help gj
+
+
+
+
+
+
+VimTip 39: Undo and Redo
+http://vim.sf.net/tips/tip.php?tip_id=39
+
+To undo recent changes, use the u[ndo] command:
+
+u              undo last change (can be repeated to undo preceding commands)
+U              return the line to its original state (undo all changes in current line)
+CTRL-R         Redo changes which were undone (undo the undo's).
+
+For a full description of the undo/redo commands refer to
+
+:help undo
+
+
+
+
+
+
+
+VimTip 40: Insert a file
+http://vim.sf.net/tips/tip.php?tip_id=40
+
+To insert the contents of a file (or the output of a system command) 
+into the current buffer, use the r[ead] command:
+
+Examples:
+
+:r foo.txt        inserts the file foo.txt below the cursor
+
+:0r foo.txt       inserts the file foo.txt above the first line
+
+:r !ls            inserts a listing of your directory below the cursor
+
+:$r !pwd          inserts the current working directory below the last line 
+
+
+For more information about the r[ead] command refer to:
+
+:help read
+
+See also:
+
+:help cmdline-ranges
+:help !cmd
+
+
+
+
+
+
+
+
+VimTip 41: Command-history facilities for Oracle/sqlplus user
+http://vim.sf.net/tips/tip.php?tip_id=41
+
+	First of all, thanks Benji fisher,  Stefan Roemer...
+and others in vim@vim.org which spend much time to 
+answer questions, sometimes foolish question asked by
+someone like me. Without their I can't get the final 
+solution for my sqlplus work descripted follows.
+	As Oracle user known, sqlplus has a very bad 
+command-line edition environment. It has no 
+command-history, don't support most of getline 
+facilities. which MySQL and shell does it well. 
+Even Microsoft recogonize this point. In Windows2000, 
+doskey is installed by default.
+	Below is my vim-solution to sqlplus, which 
+record the command-history when you use 
+edit(sqlplus builtin command) to open the editor
+specified by EDITOR environment variable. It saves
+the SQL statement into a standalone file such as
+.sqlplus.history
+	Every time you open the file 
+afiedt.buf(sqlplus's default command-buffer file), 
+you get two splited windows, the buffer above is 
+afiedt.buf, the buffer below is .sqlplus.history, 
+you can see every SQL statement in the windows. 
+If you want to use SQL statement in line 5 to replace
+ the current command-buffer, just press 5K, then 
+	:xa
+	to back to you sqlplus. and use / to repeat the command
+ saved in command-buffer file called afiedt.buf by default.
+	It can't process multi-line SQL statement convinencely.
+ Todo this, just use you favorite vim trick to do that:
+	fu! VimSQL()
+    nnoremap <C-K> :<C-U>
+	exe "let linenum=".v:count<CR>:1,$-1d<CR><C-W>j:exe lin
+	enum."y"<CR><C-W>kP
+    let linenum=line("$")
+    1,$-1w! >> ~/.sqlplus.history
+    e ~/.sqlplus.history
+    execute ":$-".(linenum-1).",$m0"
+    %!uniq
+    if line("$")>100
+      101,$d
+    endif
+    b#
+    set splitbelow
+    sp ~/.sqlplus.history
+    au! BufEnter afiedt.buf
+endf
+au BufEnter afiedt.buf call VimSQL()
+
+
+
+
+
+
+
+VimTip 42: Using marks
+http://vim.sf.net/tips/tip.php?tip_id=42
+
+To mark one or more positions in a file, use the m[ark] command.
+
+Examples:
+
+ma       -    set current cursor location as mark a
+
+'a       -    jump to beginning of line of mark a
+
+`a       -    jump to postition of mark a
+
+d'a      -    delete from current line to line of mark a
+
+d`a      -    delete from current cursor position to mark a
+
+c'a      -    change text from current line to line of mark a
+
+y`a      -    yank text to unnamed buffer from cursor to mark a
+
+:marks   -    list all the current marks
+
+NB: Lowercase marks (a-z) are valid within one file. Uppercase marks
+(A-Z), also called file marks, are valid between files.
+
+For a detailed description of the m[ark] command refer to
+
+:help mark
+
+See also:
+
+:help various-motions 
+
+
+
+
+
+
+VimTip 43: Using abbreviations
+http://vim.sf.net/tips/tip.php?tip_id=43
+
+To define abbreviations, use the ab[breviate] command.
+
+Examples:
+
+:ab rtfm read the fine manual  -  Whenever you type 'rtfm' followed by a <space> (or <esc> or <cr>) vim
+                                  will expand this to 'read the fine manual'.
+
+:ab                            -  list all defined abbreviations
+
+:una[bbreviate] rtfm           -  remove 'rtfm' from the list of abbreviations
+
+:abc[lear]                     -  remove all abbreviations
+
+
+NB: To avoid expansion in insert mode, type CTRL-V after the last character of the abbreviation. 
+
+For a detailed description of the ab[breviate] command and some more examples refer to
+
+:help abbreviations
+
+
+
+
+
+
+
+VimTip 44: Repeat last changes
+http://vim.sf.net/tips/tip.php?tip_id=44
+
+Simple text changes in normal mode (e.g. "dw" or "J") can be repeated with the "." command.
+The last command-line change (those invoked with ":", e.g. ":s/foo/bar") can be 
+repeated with the "@:" command.
+
+For more informations about repeating single changes refer to:
+
+:help single-repeat
+
+
+
+
+
+
+VimTip 45: Using command-line history
+http://vim.sf.net/tips/tip.php?tip_id=45
+
+You can recall previous command lines from a history table by hitting 
+the <Up> and <Down> cursor keys in command-line mode. 
+For example, this can be used to find the previous substitute command: 
+Type ":s" and then <Up>.
+
+There are separate history tables for the ':' commands and for 
+previous '/' or '?' search strings.
+
+To display the history of last entered commands or search strings, 
+use the :his[tory] command:
+
+:his       -      Display command-line history. 
+
+:his s     -      Display search string history.
+
+  
+For a detailed description of the command-line history refer to:
+
+:help cmdline-history
+
+See also:
+
+:help Cmdline-mode
+
+
+
+
+
+
+
+VimTip 46: Win32 binaries with perl, python, and tcl
+http://vim.sf.net/tips/tip.php?tip_id=46
+
+> Does anyone know if windows binaries of vim 5.7 are available with perl and
+> python support turned on?
+
+ftp://vim.sourceforge.net/pub/vim/upload_binaries/
+
+http://vim.sourceforge.net/bin_download/
+
+
+
+
+
+
+VimTip 47: Swapping characters, words and lines
+http://vim.sf.net/tips/tip.php?tip_id=47
+
+To swap two characters or lines, use the following commands:
+
+xp       -     delete the character under the cursor and put it afterwards.
+               (In other words, it swaps the characters.)
+
+ddp      -     delete the current line and put it afterwards.
+               (In other words, it swaps the lines.)
+
+Unfortunately there is no universal solution to swap two words.
+You may try the following ones, but don't expect too much of them:
+
+dawwP    -     delete the word under the cursor, move forward one word
+               and put it back after the cursor.  (In other words, it 
+               swaps the current and following word.)
+               
+dawbP    -     delete the word under the cursor, move backward on word
+               and put it back after the cursor.  (In other words, it
+               swaps the current and preceeding word.)
+
+
+
+
+
+
+
+
+VimTip 48: Moving around
+http://vim.sf.net/tips/tip.php?tip_id=48
+
+You can save a lot of time when navigating through the text by using 
+appropriate movements commands. In most cases the cursor keys,
+<PageUp> or <PageDown> are NOT the best choice.
+
+Here is a selection of some basic movement commands that 
+hopefully helps you to acquire a taste for more:
+
+e   - move to the end of a word                   
+w   - move forward to the beginning of a word     
+3w  - move forward three words
+b   - move backward to the beginning of a word
+3b  - move backward three words
+
+$       - move to the end of the line          
+<End>   - same as $
+0       - move to the beginning of the line
+<Home>  - same as 0
+
+)   - jump forward one sentence
+(   - jump backward one sentence
+
+}   - jump forward one paragraph
+{   - jump backward one paragraph
+
+H   - jump to the top of the display       
+M   - jump to the middle of the display   
+L   - jump to the bottom of the display
+
+'m  - jump to the beginning of the line of mark m
+`m  - jump to the location of mark m
+
+G   - jump to end of file
+1G  - jump to beginning of file
+50G - jump to line 50
+
+'' - return to the line where the cursor was before the latest jump
+`` - return to the cursor position before the latest jump (undo the jump).
+
+%  - jump to corresponding item, e.g. from an open brace to its 
+     matching closing brace
+   
+For some more interesting movement commands (especially those 
+for programmers) refer to:
+
+:help motion.txt
+
+:help search-commands
+
+
+
+
+
+
+VimTip 49: Switching case of characters
+http://vim.sf.net/tips/tip.php?tip_id=49
+
+To switch the case of one or more characters use the "~", "gU" or
+"gu" commands.
+
+Examples:
+
+~     -     switch case of character under cursor 
+            (in visual-mode: switch case of highlighted text)
+
+3~    -     switch case of next three characters
+
+g~~   -     switch case of current line
+
+U     -     in visual-mode: make highlighted text uppercase
+
+gUU   -     make current line uppercase
+
+u     -     in visual-mode: make highlighted text lowercase
+
+guu   -     make current line lowercase
+
+gUaw  -     make current word uppercase
+
+guaw  -     make current word lowercase
+
+For some more examples refer to
+
+:help ~
+
+See also:
+
+:help simple-change
+
+
+
+
+
+
+VimTip 50: Recovering files
+http://vim.sf.net/tips/tip.php?tip_id=50
+
+If your computer has crashed while editing a file, you should be able 
+to recover the file by typing 
+
+      vi -r <filename>
+
+where <filename> is the name of the file you were editing at the time 
+of the crash.
+If you were editing without a file name, give an empty string as argument:
+
+      vim -r ""
+
+To get a list of recoverable files start vim without arguments:
+
+      vim -r
+
+
+For more information about file recovery refer to:
+
+:help recovery
+
+
+
+
+
+
+
+VimTip 51: Entering german umlauts
+http://vim.sf.net/tips/tip.php?tip_id=51
+
+To enter german umlauts (or any other of those weired 
+characters) not available on your keyboard use 'digraphs':
+
+In insert-mode type for example:
+    
+     CTRL-K "a
+
+     CTRL-K ^e
+ 
+which gives an 'ä' and 'e' with a hat. 
+
+You can also set the digraph option:
+
+    :set digraph (or :set dg)
+
+With digraph option set you can enter 
+
+    " <BS> a
+
+    ^ <BS> e
+
+which gives the same result.
+
+To get a list of currently defined digraphs type
+
+   :dig[graphs]
+
+For more information about defining and using digraphs refer to:
+
+:help digraph.txt
+
+
+
+
+
+
+VimTip 52: Scrolling synchronously
+http://vim.sf.net/tips/tip.php?tip_id=52
+
+If you want to bind two or more windows such that when one
+window is scrolled, the other windows are scrolled simultaneously,
+set the 'scrollbind' option for these windows:
+
+:set scrollbind
+
+When a window that has 'scrollbind' set is scrolled, all other
+'scrollbind' windows are scrolled the same amount, if possible.
+
+For more information about the 'scrollbind' option refer to
+
+:help scoll-binding
+
+
+
+
+
+
+
+VimTip 53: Better colors for syntax highlighting
+http://vim.sf.net/tips/tip.php?tip_id=53
+
+For syntax highlighting there are two sets of default color 
+maps: One for a light and another one for a dark background.
+If you have a black background, use the following command to
+get a better color map for syntax highlighting:
+
+:set background=dark
+
+You have to switch off and on again syntax highlighting to
+activate the new color map:
+
+:syntax off
+:syntax on
+
+For a detailled description of syntax highlighting refer to
+
+:help syntax.txt
+
+See also the Vim syntax support file: $VIMRUNTIME/syntax/synload.vim
+
+
+
+
+
+
+VimTip 54: View a Java Class File Decompiled thru Vim
+http://vim.sf.net/tips/tip.php?tip_id=54
+
+Hi All,
+Wish u could view a Java Class File using Vim,
+Well ur query ends here.
+First of all u will need a Java Decompiler to decompile
+the Class File.
+I would suggest the JAD decompiler by Pavel Kouznetsov 
+http://www.geocities.com/SiliconValley/Bridge/8617/jad.html
+
+Its a command line decompiler and absolutely free.
+U can use any command line decompiler of ur choice.
+
+Next create a vimscript file called jad.vim as
+######################### FILE START ################
+augr class
+au!
+au bufreadpost,filereadpost *.class %!d:jad.exe -noctor -ff -i -p %
+au bufreadpost,filereadpost *.class set readonly
+au bufreadpost,filereadpost *.class set ft=java
+au bufreadpost,filereadpost *.class normal gg=G
+au bufreadpost,filereadpost *.class set nomodified
+augr END
+######################## FILE END #####################
+
+Note:- Keep the Jad.exe in a directory with out white spaces.
+The -p options directs JAD to send the output to standard output
+instead of a .jad file. Other options are described on the JAD site.
+
+Next add the following line in the .vimrc file.
+so jad.vim
+
+Next time u do vim abc.class. Viola u have the source code
+for abc.class.
+
+NOTE:- I have written the script so as to open the class file
+read only, So that u dont accidently modify it.
+U can also exted this script to unjar a jar file and then view each
+file in the JAR file.
+thanks
+bhaskar
+Any suggestions are welcome
+
+
+
+
+
+
+
+VimTip 55: previous buffer
+http://vim.sf.net/tips/tip.php?tip_id=55
+
+One of the keys to vim is buffer management. If I have to use another IDE that makes me click on a tab every time I want to look at another file I'm going to go postal.
+
+So of course you know about :ls which lists all the current open buffers. This gets a little unweildly once you have a full project open so you can also use :b <any snipit of text> <tab> to complete to an open buffer. This is really nice because you can type any fragment of a file name and it will complete to the matching file. (i.e. RequestManager.java can be completed using "tma"<tab> or "req"<tab> or "r.java"<tab>).
+
+Now for awhile I was also using :bn and :bp which jumps you to the next and previous buffer respectively. I found I was often frustrated because I wanted :bp to be the previous buffer I was in, not the previous buffer in the list. So (drum roll) the reason I wrote this tip was because of:
+
+:b#
+
+jump to the previous buffer you were in. Very very handy. The only thing nicer are tag, but that's a tip for another time.
+
+:help buffers
+:help bn
+:help bp
+
+If anybody knows where to get help on # in this context please add notes.
+
+
+
+
+
+
+VimTip 58: how to avoid obliterating window layout
+http://vim.sf.net/tips/tip.php?tip_id=58
+
+If you take the time to lay out several windows
+with vim (especially vertically in version 6), you may be bummed when
+you hit an errant key and find that all but what one window
+disappears.
+
+What happens: while navigating between windows, you
+hit <C-W>j, <C-W>k, etc.  At some point you accidently
+hit <C-W> but then don't follow with a window command.
+Now hitting 'o' to start insert mode issues a command
+equivalent to :only, and closes all windows execept
+for the one you are in (unless some windows have unsaved
+changes in them).
+
+How to avoid this: petition the vim-dev mailing list about
+how :only is sufficient for the infrequenty use this might
+get (j/k).
+
+Really: use mapping to disable the <C-W>o functionality; put
+this in your .vimrc:
+
+nnoremap <C-W>O :echo "sucker"<CR>
+nnoremap <C-W>o :echo "sucker"<CR>
+nnoremap <C-W><C-O> :echo "sucker"<CR>
+
+references:
+
+:help :only
+:help CTRL-W_o
+
+That is all.
+Scott
+
+
+
+
+
+
+
+VimTip 62: Applying substitutes to a visual block
+http://vim.sf.net/tips/tip.php?tip_id=62
+
+If you'd like to apply a substitute, or even any ex command, to a visual-block
+selected text region (ctrl-v and move), then you'll want Stefan Roemer's
+http://www.erols.com/astronaut/vim/vimscript/vis.vim .  Just source it in,
+and then press ":B".  On the command line you'll see
+
+:'<,'>BCtrl-V 
+
+Just continue with the substitute or whatever...
+
+:'<,'>B s/abc/ABC/g
+
+and the substitute will be applied to just that block of text!
+
+Example: Ctrl-V Select..........|......Type
+..................just the central....|......:B s/abc/ABC/g
+..................four "abc"s..............|
+..................----------------....|...-------------
+..................abcabcabcabc............|......abcabcabcabc
+..................abcabcabcabc............|......abcABCABCabc
+..................abcabcabcabc............|......abcABCABCabc
+..................abcabcabcabc............|......abcabcabcabc
+ (dots inserted to retain tabular format)
+
+
+
+
+
+
+
+
+VimTip 63: Applying substitutes to a visual block
+http://vim.sf.net/tips/tip.php?tip_id=63
+
+If you'd like to apply a substitute, or even any ex command, to a visual-block
+selected text region (ctrl-v and move), then you'll want Stefan Roemer's
+http://www.erols.com/astronaut/vim/vimscript/vis.vim .  Just source it in,
+and then press ":B".  On the command line you'll see
+
+:'<,'>BCtrl-V 
+
+Just continue with the substitute or whatever...
+
+:'<,'>B s/abc/ABC/g
+
+and the substitute will be applied to just that block of text!
+
+Example: Ctrl-V Select..........|......Type
+..................just the central.......|......:B s/abc/ABC/g
+..................four "abc"s.................|
+..................---------............|...-------------
+..................abcabcabcabc............|......abcabcabcabc
+..................abcabcabcabc............|......abcABCABCabc
+..................abcabcabcabc............|......abcABCABCabc
+..................abcabcabcabc............|......abcabcabcabc
+ (dots inserted to retain tabular format)
+
+
+
+
+
+
+
+
+VimTip 64: Always set your working directory to the file you're editing
+http://vim.sf.net/tips/tip.php?tip_id=64
+
+Sometimes I think it's helpful if your working directory is always the same as the buffer you are editing.  You need to put this in your .vimrc:
+
+function! CHANGE_CURR_DIR()
+	let _dir = expand("%:p:h")
+	exec "cd " . _dir
+	unlet _dir
+endfunction
+
+autocmd BufEnter * call CHANGE_CURR_DIR()
+
+Doing this will make a "cd" command to your the current buffer each time you switch to it.  This is actually similar to vimtip#2 but more automatic.
+
+You should see for more details:
+:help autocmd
+:help expand
+:help function
+
+Note: This tip was contributed by somebody on the list a while ago (sorry for no reference) and it has been extremely helpful to me. Thanks!
+
+
+
+
+
+
+VimTip 65: Insert line number into the actuall text of the file.
+http://vim.sf.net/tips/tip.php?tip_id=65
+
+Although :set number will add nice line number for you At time you may wish to actually place the line numbers into the file. For example on GNU Unix you can acomplish a simular task using cat -n file > new_file
+
+In VIM you can use the global command to do this
+
+:g/^/exec "s/^/".strpart(line(".")."    ", 0, 4)
+
+What this does is run the exec comand on every line that matches /^/ (All)
+The exec command taks a string and executes it as if it were typed in.
+
+line(".")."    " -> returns the number of the current line plus four spaces.
+strpart("123    ", 0, 4) -> returns only the first four characters ("123 ").
+"s/^/123 " -> substituts the begining of the line with "123 ".
+
+
+
+
+
+
+VimTip 66: Transfer text between two Vim 'sessions',
+http://vim.sf.net/tips/tip.php?tip_id=66
+
+This one is a one of my favorites from Dr. Chip, and I haven't seen it come
+across vim tips yet...
+
+Can use either visual, or marking to denote the text.
+
+" transfer/read and write one block of text between vim sessions
+" Usage:
+" `from' session:
+"     ma
+"     move to end-of-block
+"     xw
+"
+" `to' session:
+"     move to where I want block inserted
+"     xr
+"
+if has("unix")
+  nmap xr   :r $HOME/.vimxfer<CR>
+  nmap xw   :'a,.w! $HOME/.vimxfer<CR>
+  vmap xr   c<esc>:r $HOME/.vimxfer<CR>
+  vmap xw   :w! $HOME/.vimxfer<CR>
+else
+  nmap xr   :r c:/.vimxfer<CR>
+  nmap xw   :'a,.w! c:/.vimxfer<CR>
+  vmap xr   c<esc>:r c:/.vimxfer<cr>
+  vmap xw   :w! c:/.vimxfer<CR>
+endif
+
+
+
+
+
+
+
+VimTip 67: Ascii Value
+http://vim.sf.net/tips/tip.php?tip_id=67
+
+Sometimes we, the programmers, need the value of a character, don't we?
+You can learn the ascii value of a character by pressing g and a keys.(ga)!
+It displays the value in dec, hex and octal...
+
+
+
+
+
+
+VimTip 68: Delete key
+http://vim.sf.net/tips/tip.php?tip_id=68
+
+Don't worry if your delete key does not work properly.
+Just press <CTRL>-Backspace.
+It works under both mode(insert or normal).
+
+
+
+
+
+
+VimTip 69: dot makes life easier
+http://vim.sf.net/tips/tip.php?tip_id=69
+
+You can copy and paste the last changes you made in the last insert mode
+without using y and p by pressing . (just dot). 
+Vim memorizes the keys you pressed and echos them if you hit the dot key. 
+You must be in command mode as usual.
+It can be helpful...
+
+
+
+
+
+
+VimTip 70: running a command on all buffers
+http://vim.sf.net/tips/tip.php?tip_id=70
+
+From Peter Bismuti on the vim list:
+
+How to global search and replace in all buffers with one command? 
+You need the AllBuffers command:
+
+:call AllBuffers("%s/string1/string2/g")
+
+"put this in a file and source it
+function AllBuffers(cmnd)
+  let cmnd = a:cmnd
+  let i = 1
+  while (i <= bufnr("$"))
+    if bufexists(i)
+      execute "buffer" i
+      execute cmnd
+    endif
+    let i = i+1
+  endwhile
+endfun
+
+":call AllBuffers("%s/foo/bar/ge|update")
+
+Thanks Peter!
+
+
+
+
+
+
+VimTip 71: Transfer text between two gvim sessions using clipboard
+http://vim.sf.net/tips/tip.php?tip_id=71
+
+If you use gvim, you can transfer text from one instance of gvim into another one using clipboard.  It is convenient to use * (star) register, like this:
+
+In one instance yank two lines into clipboard:
+    "*2yy
+Paste it in another instance in normal mode:
+    "*p
+or in insert mode:
+    <Ctrl-R>*
+
+
+
+
+
+
+VimTip 72: Remove unwanted empty lines
+http://vim.sf.net/tips/tip.php?tip_id=72
+
+Sometimes to improve the readability of the document I insert empty lines, which will be later removed.
+To get rid off them try: 
+:%g/^$/d
+This will remove a l l  empty line in the document.
+Some other tipps you can find under www.linuxclass.de/vim.phtml
+
+
+
+
+
+
+
+VimTip 73: Using vim as calculator
+http://vim.sf.net/tips/tip.php?tip_id=73
+
+Basic calculations can done within vim easily by typing (insert-mode):
+STRG (=CTRL) + R followed by =
+then for example 2+2 and hit RETURN
+the result 4 will be printed in the document.
+
+Some other tipps you can find under www.linuxclass.de/vim.phtml
+
+
+
+
+
+
+
+VimTip 74: Using Vim as an outline processor
+http://vim.sf.net/tips/tip.php?tip_id=74
+
+With the addition of folding, Vim6 can function as a high performance outline processor. Simply :set ai and in insert mode use backspace to promote and tab to demote headlines.
+
+In command mode, << promotes (n<< to promote multiple lines), and >> demotes. Also, highlight several headlines and < or > to promote or demote.
+
+:set foldmethod=indent, and then your z commands can expand or collapse headline trees, filewide or by the tree.
+
+The VimOutliner GPL distro contains the scripts and configs to easily configure Vim6 as an outliner, including scripts to create tag files enabling interoutline hyperlinking.
+
+The VimOutliner project is at http://www.troubleshooters.com/projects/vimoutliner/index.htm.
+
+Steve (Litt)
+slitt@troubleshooters.com
+
+
+
+
+
+
+
+VimTip 75: Remap CAPSLOCK key in Windows 2000 Professional and NT4.0
+http://vim.sf.net/tips/tip.php?tip_id=75
+
+If you're Windows 2000 Professional user and got tired to move your hands off basic row when hitting <ESC> key
+here the solution (not for Windows 9x.):
+remap CapsLock key as <ESC> key. It's located in useful position.
+Put this lines into <EscLock.reg> file and start it in explorer.Reboot.Enjoy.
+
+REGEDIT4
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout]
+"Scancode Map"=hex:00,00,00,00,00,00,00,00,02,00,00,00,01,00,3a,00,00,00,00,00
+
+To restore you capslock back just delete this entry from Registry and reboot.
+And below is remapping <capslock> as <Left Control>:
+
+REGEDIT4
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout]
+"Scancode Map"=hex:00,00,00,00,00,00,00,00,02,00,00,00,1d,00,3a,00,00,00,00,00
+
+
+
+
+
+
+
+
+VimTip 76: Folding for Quickfix
+http://vim.sf.net/tips/tip.php?tip_id=76
+
+The Quickfix mode aims to "speed up the edit-compile-edit cycle" according to ':help quickfix'. After executing ':make' or ':grep' it is possible to skim through the list of errors/matches and the appropriate source code locations with, for instance, the ':cnext' command.
+Another way to get a quick overview is to use VIMs folding mode, to fold away all the error-free/match-free regions.
+The script at the end of this message can be used for this purpose. It is at the moment not elaborate enough to put it up as a 'script'; but it might give someone inspiration to do so.
+Big restrictions / bugs are as follows:
+1. Vim Perl interface is required, i.e. the output of ':version' must contain '+perl' (People with Vim scripting knowledge might fix this)
+2. Works only for one file, i.e. the current buffer.
+3. It's a quick hack.
+Sample usage: (a) edit a file, (b) do ':grep regexp %' to get a quickfix error list and (c) ':source foldqf.vim' will fold as described
+Increasing the value of $CONTEXT gives you more context around the error regions.
+
+Here comes it, it should be 7 lines:
+---foldqf.vim
+cwindow
+perl $CONTEXT = 0;
+perl @A = map { m/\|(\d+)\|/; $1 +0 } $curbuf->Get(1..$curbuf->Count());
+close
+normal zD
+perl sub fold { VIM::DoCommand( $_[0] . ',' . ($_[1]) . "fold" ) if( $_[0] < $_[1] ); }
+perl $last = 0; for (@A) { fold( $last+1+$CONTEXT, $_-1-$CONTEXT ); $last = $_; }; VIM::DoCommand(($A[-1]+1+$CONTEXT ) . ',$fold' );
+
+
+
+
+
+
+
+VimTip 77: Displaying search results using folds
+http://vim.sf.net/tips/tip.php?tip_id=77
+
+
+A guy I work with told me about a function that an old IBM text editor had that he said was useful, and that is to create folds in the file after a search such that every line that is visible contains the search pattern(except possibly the first). All lines that do not contain the search pattern are folded up to the last occurence of the pattern or the top of the file.  
+
+One use for such a function is to be able to make a quick and dirty api of a source file.  For example, if working in Java, you could run the function using the pattern "public|protected|private" and ithe results would be that only the method headers would be visible (well, close enough).  
+
+
+function! Foldsearch(search)
+        normal zE          "erase all folds to begin with
+        normal G$          "move to the end of the file
+	let folded = 0     "flag to set when a fold is found
+        let flags = "w"    "allow wrapping in the search
+        let line1 =  0     "set marker for beginning of fold
+        while search(a:search, flags) > 0
+                let  line2 = line(".")
+		"echo "pattern found at line # " line2
+                if (line2 -1 > line1)
+                        "echo line1 . ":" . (line2-1)
+                        "echo "A fold goes here."
+                        execute ":" . line1 . "," . (line2-1) . "fold"
+						let folded = 1       "at least one fold has been found
+                endif
+                let line1 = line2     "update marker
+                let flags = "W"       "turn off wrapping
+        endwhile
+		" Now create the last fold which goes to the end of the file.
+        normal $G
+        let  line2 = line(".")
+		"echo "end of file found at line # " line2
+        if (line2  > line1 && folded == 1)
+                "echo line1 . ":" . line2
+                "echo "A fold goes here."
+                execute ":". line1 . "," . line2 . "fold"
+        endif
+endfunction
+
+
+" Command is executed as ':Fs pattern'"
+command! -nargs=+ -complete=command Fs call Foldsearch(<q-args>)
+" View the methods and variables in a java source file."
+command! Japi Fs public\|protected\|private
+
+
+
+
+
+
+
+
+
+VimTip 78: rotating mail signatures
+http://vim.sf.net/tips/tip.php?tip_id=78
+
+For people using mutt and vim for mail, the following script will allow you to insert a new signature (and again and again if you don\'t like the current one) at the bottom of your mail. This is usefull eg when you don\'t want to send a potentially offensive quote to someone you don\'t know very well (or a mailing list), but are too lazy to delete the quote, open your quotes file, and cut and paste another one in. (I put it here in \'tips\' and not in \'scripts\' because it is imo too short to be a \'real\' script)
+
+" rotate_sig.vim
+" Maintainer:  Roel Vanhout <roel@2e-systems.com>
+" Version:     0.1
+" Last Change: Tuesday, June 12, 2001
+" Mapping I use:
+" nmap ,r :call RotateSig()<CR>
+" Usage:
+" -Make sure you delimit your sig with '-- ', or adjust the script
+" -Adjust the last execute to a command that prints a sig to stdout
+" Known problems:
+"   - You'll get an error message when you're below the last
+"     '^-- $' in your mail (nothing bad though - just an not-
+"     found marker)
+
+function! RotateSig()
+    normal mQG
+    execute '?^-- $'
+    execute ':nohl'
+    normal o<ESC>
+    normal dG
+    normal <CR>
+    execute 'r !~/bin/autosig ~/.quotes \%'
+    normal `Q
+endfunction
+
+
+
+
+
+
+
+
+VimTip 79: How to use :grep to get a clickable list of function names
+http://vim.sf.net/tips/tip.php?tip_id=79
+
+
+The following function will make a :cwindow window with a line per function
+in the current C source file. NOTE: It writes the file as a side effect.
+
+Invoke with ':call ShowFunc()'
+You may want to do :nmap <somekey> :call ShowFunc()<CR>
+
+function! ShowFunc()
+    
+    let gf_s = &grepformat
+    let gp_s = &grepprg
+
+    let &grepformat = '%*\k%*\sfunction%*\s%l%*\s%f %*\s%m'
+    let &grepprg = 'ctags -x --c-types=f --sort=no -o -'
+
+    write
+    silent! grep %
+    cwindow
+
+    let &grepformat = gf_s
+    let &grepprg = gp_s
+
+endfunc
+
+
+
+
+
+
+
+VimTip 80: Restore cursor to file position in previous editing session
+http://vim.sf.net/tips/tip.php?tip_id=80
+
+Here's something for your <.vimrc> which will allow you to restore your cursor position in a file over several editing sessions.  This technique uses the viminfo option:
+
+Ex. set viminfo='10,\"100,:20,%,n~/.viminfo
+    au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+
+If you're on Unix, the viminfo is probably fine as is (but check up on Vim's help for viminfo to see if you like the settings above).  For Windows you'll need to change the "n" suboption to something like
+
+Ex. set viminfo='10,\"100,:20,%,nc:\\some\\place\\under\\Windoz\\_viminfo
+
+This tip is a somewhat improved version of the example given for :he line()
+in the Vim on-line documentation.
+
+
+
+
+
+
+VimTip 81: Substitution of characters and lines in VIM is made far easier with the s and S commands
+http://vim.sf.net/tips/tip.php?tip_id=81
+
+Substitute  Characters
+-----------------------------------
+I was just editing a file that contained the same leading string on many lines. 
+
+example:
+
+foo_bar_baz1=a
+foo_bar_baz1=abc674
+foo_bar_baz1=qrs
+foo_bar_baz1=m1
+foo_bar_baz1=bz90
+foo_bar_baz1=bc
+...
+
+Needing to only substitute a portion of the string, I referred to a VIM reference card and discovered a command answering my need exactly. The s command is used to subsitute a certain number of characters. In my example file above, if I only needed to subsititute the characters foo_bar, I set the cursor on the first character where I'd like the subsitution to begin and type 7s. VIM drops the characters foo_bar and goes to insert mode, waiting for the substitution text.
+
+Substitute Lines
+-----------------------
+After years of using vi and VIM and always deleting multiple lines in order to replace them, I just discovered the S command. If you need to subsitute three lines of text, simply type 3S. VIM drops the three lines and goes into insert mode, waiting for the subsitution text. 
+
+
+
+
+
+
+VimTip 82: letting variable values be overwritten in a script
+http://vim.sf.net/tips/tip.php?tip_id=82
+
+this is a simple function i wrote to get the value of a variable from three different places (in that order):  the current buffer, the global setting or from the script itself.
+
+this allows me to set a default value for a configuration variable inside my script and the user to change it on a global level by setting the same variable with a g: prepended.  then, they can further set it on a per-buffer level by the the b: mechanism.  one of the examples for this might be my comments script (not uploaded).  i have a variable in there that determines whether comment characters (// for java, for example) are placed the beginning of the line or just before the first-non-blanks in the text.  i set up a default in my script:
+
+let s:comments_hug_start_of_line=0   " comments should hug the text
+
+that's fine as a default, but if i want to overwrite it for vim scripts, i just put the following in my ftplugin/vim.vim:
+
+let b:comments_hug_start_of_line=1   " vim comments should hug the first column, always
+
+" tries  to return  the buffer-specific  value of  a variable;  if not
+" found,  tries to  return the  global value  -- if  that's not  found
+" either, returns the value set in the script itself
+function! GetVar(varName)
+  if (exists ("b:" . a:varName))
+    exe "let retVal=b:" . a:varName
+  elseif (exists ("g:" . a:varName))
+    exe "let retVal=g:" . a:varName
+  elseif (exists ("s:" . a:varName))
+    exe "let retVal=s:" . a:varName
+  else
+    retVal=-1
+  endif
+  return retVal
+endfunction
+
+personally, i never let it get to the -1 state by always having an s: set with SOME default value.
+
+
+
+
+
+
+VimTip 83: how to indent (useful for source code)
+http://vim.sf.net/tips/tip.php?tip_id=83
+
+Here is the most useful vim command that I know of and I'm surprised that it's not yet in the tips list.
+
+I use the indent features of vim all the time. Basically, it lets you indent your source code.
+
+SETUP: To make indentation work nicely I have the following in my .vimrc file:
+set et
+set sw=4
+set smarttab
+
+these make vim behave nicely when indenting, giving 4 spaces (not tabs) for each "tabstop".
+
+HOW TO USE:
+in command mode, == will indent the current line
+selecting a range of lines (with shift-v) then == will indent your selection
+typing a number then == will indent that many lines, starting from your cursor
+(you get the idea, there are many other things you can do to select a range of lines)
+
+Tell me that isn't great?
+
+
+
+
+
+
+
+VimTip 84: Changing the behaviour of . to include visual mode
+http://vim.sf.net/tips/tip.php?tip_id=84
+
+one of the things i do a lot in vim is to make a change to the beginning
+or end of  the line (such as adding  the text '// remove' at  the end of
+java debug code).  a quick way of doing  this is to use a  to append the
+text to the end of the first line  and then move down one, hit . (repeat
+last edit), move down, hit .  etc. etc. the following mapping allows one
+to  simply  highlight the  region  in  question and  hit  .  -- it  will
+automatically execute the . once on each line:
+
+  " allow the . to execute once for each line of a visual selection
+  vnoremap . :normal .<CR>
+
+another thing i do a lot is to  record a quick macro in the "a" register
+and then play it back a number of  times. while @@ can be used to repeat
+the last register used, my recorded macros sometimes use other registers
+so @@ doesn't necessarily  give me the same results as  @a. also, i have
+mapped ' to `  because i like to go to the precise  location of my marks
+-- always --  and never to the  beginning of the line. this  leaves my `
+key unused. so:
+
+  " make ` execute the contents of the a register
+  nnoremap ` @a
+
+then, in keeping with the visual . above, i did the same for the ` -- is
+thexecutes @a once on each highlighed line.
+
+  vnoremap ` :normal @a<CR>
+
+as an example, say i have the following lines of java code:
+
+      public String m_asdf;
+      public String m_lkhj;
+      public int m_hjkhjkh;
+
+and, for some reason, i need to get the following:
+
+      "asdf"
+      "lkhj"
+      "hjkhjkh"
+
+i record the following into a:
+
+  ^cf_"<ESC>$r"
+
+the ^  is because my  java code is  indented and i  don't want to  go to
+column 0 and the <esc> is an actual escape i hit to exit insert mode.
+
+then, i  simply select (visually) the  other lines (only two  in case --
+admittedly not an overly useful example) and just hit `.
+
+
+
+
+
+
+
+VimTip 85: How to mimic the vim 6.0 plugin feature with older versions
+http://vim.sf.net/tips/tip.php?tip_id=85
+
+If you do not have vim 6.0, but would like to mimic the plugins directory feature then copy and paste this into your vimrc:
+
+exec "source " . substitute(glob($VIM."/plugins/*.vim"), "\n", "\nsource ", "g")
+
+It will automatically source every vim script file located in the vim/plugins directory.
+Now, to add a new plugin, just drop the script in this directory and vim will automatically find it.
+
+
+
+
+
+
+
+VimTip 86: Helps undo 1 line when entered many
+http://vim.sf.net/tips/tip.php?tip_id=86
+
+When U entered text, U cannot undo only 1 line, for example, when U press "u", all entered in last "insert" text removed.
+
+If U add this line to .vimrc:
+inoremap <Return> <Return>^O^[
+where "^O" or "^[" is 1 char
+"u" will undo (remove) only 1 line.
+
+
+
+
+
+
+
+VimTip 87: Get vim 5.x window in vim 6.x
+http://vim.sf.net/tips/tip.php?tip_id=87
+
+The format of the window title in vim 5.x (well, at least for 5.7,.8, for Win32) used to be VIM - <full filename with path>.  It's not in the win32 binary of 6.0an that I found.  I want my old way back.
+
+Turns out, all that it takes to get it back is 
+:set title titlestring=VIM\ -\ %F "make sure that the window caption setting is turned on and set caption to vim 5.x style
+
+Oh, however, one thing I did like about the 6.0 style is that it puts the word "help" in the title when the current buffer is a help file; so, I just tacked %h to my titlestring giving:
+
+:set title titlestring=VIM\ -\ %F\ %h "make sure that the window caption setting is turned on and set caption to vim 5.x style
+
+see also:
+:he 'titlestring'
+:he 'statusline'    "for the format for titlestring
+
+
+
+
+
+
+VimTip 88: How to maximize vim on entry (win32)
+http://vim.sf.net/tips/tip.php?tip_id=88
+
+Maybe it's just because I have far too small of a monitor, because I can get distracted while coding if I have other stuff on the screen, or because I starting using vim on a console, but I definitely like my vim window maximized.  Anyway, sticking the following in your vimrc will always maximize your vim window on startup.
+
+au GUIEnter * simalt ~x
+
+
+:he win16-maximized
+
+
+
+
+
+
+
+
+VimTip 89: Get more screen real estate by hidding toolbar and/or menus
+http://vim.sf.net/tips/tip.php?tip_id=89
+
+I use gvim over console vim because gvim is much more readable (under Windows).  However, that doesn't mean I want to dedicate screen space to things I'll never use (i.e. the toolbar and the menus).
+
+Anyway, you can give the following a try if you'd like.
+
+set guioptions-=T "get rid of toolbar
+set guioptions-=m "get rid of menu
+
+Oh, yeah.  If you decide that you don't really like being without your the toolbar or menus, issue the following:
+
+set guioptions+=T "bring back toolbar
+set guioptions+=m "bring back menu
+
+see also: 
+:he 'guioptions
+
+
+
+
+
+
+
+VimTip 90: Encryption
+http://vim.sf.net/tips/tip.php?tip_id=90
+
+You can encrypt your texts by using vim. 
+:X  prompts for an encryption key. 
+After writing your key, if you save your document 
+it will be encrypted and no one else (but you and vim) 
+can read your documents.
+If you reopen the file, VIM will ask for the key. 
+If you want to disable encryption, just type
+:set key=
+if you forget your key you will lose your document. 
+So please DO NOT forget your key,
+ 
+
+
+
+
+
+
+VimTip 91: Dictionary completions
+http://vim.sf.net/tips/tip.php?tip_id=91
+
+This tip will will explain how to use the dictionary completion facilities provided by vim.  This can be useful if you use vim to type your email, edit code, etc.  
+
+Dictionary completion is one of many search facilites provided by Insert mode completion.  It allows the user to get a list of keywords, based off of the current word at the cursor.  This is useful if you are typing a long word (e.g. acknowledgeable) and don't want to finish typing or don't remember the spelling.
+
+To start, we must first tell vim where our dictionary is located.  This is done via the 'dictionary'  option.  Below is an example.  Your location may vary.  See :help 'dictionary'  for hints as to where you should look.
+
+	:set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+
+Now, to use this list we have to enter insert mode completion.  This is done by hitting CTRL-X while in insert mode.  Next, you have to specify what you want to complete.  For dictionaries use CTRL-K.  Once in this mode the keys CTRL-N and CTRL-P will cycle through the matches.  So, to complete the word "acknowledgeable" I would do the following in insert mode:
+
+	acknow<CTRL-X><CTRL-K><CTRL-N>
+
+It can be cumbersome to type CTRL-X CTRL-K for many different completions.  So, vim gives us a shortcut.  While in insert mode CTRL-N and CTRL-P will cycle through a predetermined set of completion sources.  By default, dictionary completion is not a part of this set.  This set is defined by the 'complete' option.  Therefore, we must add dictionary to this as shown below:
+
+	:set complete-=k complete+=k
+
+Now, while in insert mode we can type the following to complete our example:
+
+	acknow<CTRL-N><CTRL-N>
+
+This shortcut may not save a whole lot of typing.  However, I find that it requires less hand movement to only worry myself with two key combinations, rather than 4.
+
+I find that the completion facilites provided by vim save me a HUGE amount of typing.  These savings can be realized in only a short amount of time if you are editing some code with functions and variables that have long names with underscores in them.
+
+For more help:
+	help ins-completion
+	help compl-dictionary
+	help 'complete'
+	help 'dictionary'
+	help :set+=
+
+
+
+
+
+
+VimTip 92: Reducing 'doc' directory size
+http://vim.sf.net/tips/tip.php?tip_id=92
+
+As everyone knows, the $VIMRUNTIME/doc is increasing rapidly in size. The directory contained so many plain-text documents that I often compress them to save my diskspace. With the support of VIM's GZIP plugin, VIM will automatically uncompress the files when we need to read them.
+Here is my procedure:
+1.  If you have the source, go to 'runtime/doc' and edit 'doctags.c', change       printf("%s\t%s\t/*", p1, argv[0]);  to  printf("%s\t%s.gz\t/*", p1, argv[0]);
+     then make. This is to modify the tag, or you'll have to change the 'tags' file by hand if you don't have doctags.c.
+2. Edit the new generated 'tags' file to rename 'help.txt.gz' back to 'help.txt' because it's hard-written in VIM executable binary.
+     :% s/help\.txt\.gz/help\.txt/g
+3. Copy the new 'tags' to $VIMRNUTIME/doc and run 'gzip *.txt; gunzip help.txt'
+
+On VIM 6.0an, we can reduce the original size (3302k) to 1326k.
+I don't know if this helps, but if someone likes to compress documents... this can be reffered :)
+    
+
+
+
+
+
+
+
+VimTip 93: if you use 'highlight search' feature, map a key to :noh
+http://vim.sf.net/tips/tip.php?tip_id=93
+
+It is very convenient to use 'hlsearch' option.  However it can be annoying to have the highlight stick longer than you want it.  In order to run it off you have to type at least 4 keystrokes, ":noh".  So, it's a good idea to map this to a key.  I like to map it to control-n.  This is the line I use in my .vimrc file to do it:
+
+nmap <silent> <C-N> :silent noh<CR>
+
+
+
+
+
+
+VimTip 94: Questions & Answers about using tags with Vim
+http://vim.sf.net/tips/tip.php?tip_id=94
+
+Using tags file with Vim
+------------------------
+This document gives you a idea about the various facilities available
+in Vim for using a tags file to browse through program source files.
+You can read the Vim online help, which explains in detail the tags
+support, using :help tagsearch.txt.  You can also use the help
+keywords mentioned in this document to read more about a particular
+command or option.  To read more about a particular command or option
+use, :help <helpkeyword> in Vim.
+
+1. How do I create a tags file?
+
+   You can create a tags file either using the ctags utility or using
+   a custom script or utility.
+
+   Help keyword(s): tag
+
+2. Where can I download the tools to generate the tags file?
+
+   There are several utilities available to generate the tags file.
+   Depending on the programming language, you can use any one of them.
+
+   1. Exuberant ctags generates tags for the following programming
+      language files: 
+      
+      Assembler, AWK, ASP, BETA, Bourne/Korn/Zsh Shell, C, C++, COBOL,
+      Eiffel, Fortran, Java, Lisp, Make, Pascal, Perl, PHP, Python,
+      REXX, Ruby, S-Lang, Scheme, Tcl, and Vim.
+
+      You can download exuberant ctags from
+      http://ctags.sourceforge.net/
+
+   2. On Unix, you can use the /usr/bin/ctags utility.  This utility
+      is present in most of the Unix installations.
+   
+   3. You can use jtags for generating tags file for java programs.
+      You can download jtags from: http://www.fleiner.com/jtags/
+
+   4. You can use ptags for generating tags file for perl programs.
+      You can download ptags from:
+      http://www.eleves.ens.fr:8080/home/nthiery/Tags/
+
+   5. You can download scripts from the following links for
+      generating tags file for verilog files:
+   
+            http://www.probo.com/vtags.htm
+            http://www.cs.albany.edu/~mosh/Perl/veri-tags
+            http://www.verilog.net/vrtags.txt
+
+   6. You can download Hdrtag from the following linke:
+
+            http://www.erols.com/astronaut/vim/index.html#Tags
+
+      This utility generates tags file for the following programming
+      languages: assembly, c/c++, header files, lex, yacc,LaTeX, vim,
+      and Maple V.
+
+   7. You can also use the following scripts which are part of the Vim
+      runtime files:
+
+          pltags.pl - Create tags file for perl code
+          tcltags - Create tags file for TCL code
+          shtags.pl - Create tags file for shell script
+
+   Help keyword(s): ctags
+
+3. How do I generate a tags file using ctags?
+
+   You can generate a tags file for all the C files in the current
+   directory using the following command:
+
+        $ ctags *.c
+
+   You can generate tags file for all the files in the current
+   directory and all the sub-directories using (this applies only to
+   exuberant ctags):
+
+        $ ctags -R .
+
+   You can generate tags file for all the files listed in a text file
+   named flist using (this applies only to exuberant ctags)
+
+       $ ctags -L flist
+
+4. How do I configure Vim to locate a tags file?
+
+   You can set the 'tags' option in Vim to specify a particular tags
+   file.
+
+        set tags=/my/dir/tags
+
+   Help keyword(s): 'tags', tags-option
+
+5. How do I configure Vim to use multiple tags files?
+
+   The 'tags' option can specify more than one tags file.  The tag
+   filenames are separated using either comma or spaces.
+
+        set tags=/my/dir1/tags, /my/dir2/tags
+
+6. How do I configure Vim to locate a tags file in a directory tree?
+
+   Note that the following will work only in Vim 6.0 and above.  You
+   can set the 'tags' option to make Vim search for the tags file in a
+   directory tree.  For example, if the 'tags' option is set like
+   this:
+
+        set tags=tags;/
+
+   Vim will search for the file named 'tags', starting with the
+   current directory and then going to the parent directory and then
+   recursively to the directory one level above, till it either
+   locates the 'tags' file or reaches the root '/' directory.
+
+   Help keyword(s): file-searching
+
+7. How do I jump to a tag?
+
+   There are several ways to jump to a tag location.
+        1. You can use the 'tag' ex command.  For example,
+
+               :tag <tagname>
+   
+           will jump to the tag named <tagname>.
+        2. You can position the cursor over a tag name and then press
+           Ctrl-].
+        3. You can visually select a text and then press Ctrl-] to
+           jump to the tag matching the selected text.
+        4. You can click on the tag name using the left mouse button,
+           while pressing the <Ctrl> key.
+        5. You can press the g key and then click on the tag name
+           using the left mouse button.
+        6. You can use the 'stag' ex command, to open the tag in a new
+           window.  For example,
+
+                :stag func1
+
+           will open the func1 definition in a new window.
+        7. You can position the cursor over a tag name and then press
+           Ctrl-W ].  This will open the tag location in a new window.
+
+   Help keyword(s): :tag, Ctrl-], v_CTRL_], <C-LeftMouse>,
+                    g<LeftMouse>, :stag, Ctrl-W_]
+
+8. How do I come back from a tag jump?
+
+   There are several ways to come back to the old location from a tag
+   jump.
+        1. You can use the 'pop' ex command.
+        2. You can press Ctrl-t.
+        3. You can click the right mouse button, while pressing the
+           <Ctrl> key.
+        4. You can press the g key and then click the right mouse
+           button.
+
+   Help keyword(s): :pop, Ctrl-T, <C-RightMouse>, g<RightMouse>
+
+9. How do I jump again to a previously jumped tag location?
+
+   You can use the 'tag' ex command to jump to a previously jumped tag
+   location, which is stored in the tag stack.
+
+   Help keyword(s): tag
+
+10. How do I list the contents of the tag stack?
+
+   Vim remembers the location from which you jumped to a tag in the
+   tag stack.  You can list the current tag stack using the 'tags' ex
+   command.
+
+   Help keyword(s): :tags, tagstack
+
+11. How do I jump to a particular tag match, if there are multiple
+    matching tags?
+
+    In some situations, there can be more than one match for a tag.
+    For example, a C function or definition may be present in more
+    than one file in a source tree.  There are several ways to jump to
+    a specific tag from a list of matching tags.
+    
+        1. You can use the 'tselect' ex command to list all the tag
+           matches.  For example,
+
+                :tselect func1
+
+          will list all the locations where func1 is defined.  You can
+          then enter the number of a tag match to jump to that
+          location.
+        2. You can position the cursor over the tag name and press g]
+           to get a list of matching tags.
+        3. You can visually select a text and press g] to get a list
+           of matching tags.
+        4. You can use the 'stselect' ex command.  This will open the
+           selected tag from the tag list in a new window.
+        5. You can position the cursor over the tag name and press
+           Ctrl-W g] to do a :stselect.
+
+    Help keyword(s): tag-matchlist, :tselect, g], v_g], :stselect,
+                     Ctrl-W_g]
+
+12. I want to jump to a tag, if there is only one matching tag,
+    otherwise a list of matching tags should be displayed.  How do I
+    do this? 
+
+    There are several ways to make Vim to jump to a tag directly, if
+    there is only one tag match, otherwise present a list of tag
+    matches.
+
+        1. You can use the 'tjump' ex command.  For example,
+
+                :tjump func1
+
+           will jump to the definition func1, if it is defined only
+           once.  If func1 is defined multiple times, a list of
+           matching tags will be presented.
+        2. You can position the cursor over the tag and press g
+           Ctrl-].
+        3. You can visually select a text and press g Ctrl-] to jump
+           or list the matching tags.
+        4. You can use the 'stjump' ex command.  This will open the
+           matching or selected tag from the tag list in a new window.
+        5. You can press Ctrl-W g Ctrl-] to do a :stjump.
+
+    Help keyword(s): :tjump, g_Ctrl-], v_g_CTRL-], :stjump,
+                     Ctrl-W_g_Ctrl-]
+
+13. How do browse through a list of multiple tag matches?
+
+    If there are multiple tag matches, you can browse through all of
+    them using several of the Vim ex commands.
+
+    1. To go to the first tag in the list, use the 'tfirst' or
+       'trewind' ex command.
+    2. To go to the last tag in the list, use the 'tlast' ex command.
+    3. To go to the next matching tag in the list, use the 'tnext' ex
+       command.
+    4. To go to the previous matching tag in the list, use the
+       'tprevious' or 'tNext' ex command.
+
+    Help keyword(s): :tfirst, :trewind, :tlast, :tnext, :tprevious,
+                     :tNext
+
+14. How do I preview a tag?
+
+    You can use the preview window to preview a tag, without leaving
+    the original window.  There are several ways to preview a tag:
+
+        1. You can use the 'ptag' ex command to open a tag in the
+           preview window.
+        2. You can position the cursor on a tag name and press Ctrl-W
+           } to open the tag in the preview window.
+        3. You can use the 'ptselect' ex command to do the equivalent
+           of the 'tselect' ex command in the preview window.
+        4. You can use the 'ptjump' ex command to do the equivalent of
+           the 'tjump' ex command in the preview window.
+        5. You can position the cursor on the tag and press Ctrl-W g}
+           to do a :ptjump on the tag.
+
+    Help keyword(s): :preview-window, :ptag, Ctrl-W_}, :ptselect,
+                     :ptjump, Ctrl-W_g}
+
+15. How do I browse through the tag list in a preview window?
+
+    If there are multiple tag matches, you can browse through all of
+    them in the preview window using several of the Vim ex commands.
+
+    1. To go to the first tag in the list, use the 'ptfirst' or
+       'ptrewind' ex command.
+    2. To go to the last tag in the list, use the 'ptlast' ex command.
+    3. To go to the next matching tag in the list, use the 'ptnext' ex
+       command.
+    4. To go to the previous matching tag in the list, use the
+       'ptprevious' or 'ptNext' ex command.
+
+    Help keyword(s): :ptfirst, :ptrewind, :ptlast, :ptnext,
+                     :ptprevious, :ptNext
+
+16. How do I start Vim to start editing a file at a given tag match?
+
+    While starting Vim, you can use the command line option '-t' to
+    supply a tag name.  Vim will directly jump to the supplied tag
+    location.
+
+    Help keyword(s): -t
+
+17. How do I list all the tags matching a search pattern?
+
+    There are several ways to go through a list of all tags matching a
+    pattern.
+
+        1. You can list all the tags matching a particular regular
+           expression pattern by prepending the tag name with the '/'
+           search character.  For example,
+
+                :tag /<pattern>
+                :stag /<pattern>
+                :ptag /<pattern>
+                :tselect /<pattern>
+                :tjump /<pattern>
+                :ptselect /<pattern>
+                :ptjump /<pattern>
+
+         2. If you have the 'wildmenu' option set, then you can press
+            the <Tab> key to display a list of all the matching tags
+            in the status bar.  You can use the arrow keys to move
+            between the tags and then use the <Enter> key to select a
+            tag.
+
+         3. If you don't have the 'wildmenu' option set, you can still
+            use the <Tab> key to browse through the list of matching
+            tags.
+
+    Help keyword(s): tag-regexp, wildmenu
+
+18. What options are available to control how Vim handles the tags
+    file?
+
+    You can use the following options to control the handling of tags
+    file by Vim:
+
+    1. 'tagrelative' - Controls how the file names in the tags file
+                       are treated.  When on, the filenames are
+                       relative to the directory where the tags file
+                       is present.
+
+    2. 'taglength' -  Controls the number of significant characters
+                      used for recognizing a tag.
+
+    3. 'tagbsearch' - Controls the method used to search the tags file
+                      for a tag.  If this option is on, binary search
+                      is used to search the tags file.  Otherwise,
+                      linear search is used.
+
+    4. 'tagstack' - Controls how the tag stack is used.
+
+    Help keyword(s): 'tagrelative', 'taglength', 'tagbsearch',
+                     'tagstack'
+
+19. Is it possible to highlight all the tags in the current file?
+
+    Yes.  Read the Vim online help on "tag-highlight".
+
+20. Is it possible to create a menu with all the tags in the current
+    file?
+
+    Yes.  It is possible to create a menu with all the tags in the
+    current file using a Vim script.  Download the TagsMenu.vim script
+    from the following link: 
+
+    http://members.home.net/jayglanville/tagsmenu/TagsMenu.html
+
+21. Is there a workaround to make the Ctrl-] key not to be treated as
+    the telnet escape character?
+
+    The default escape characters for telnet in Unix systems is
+    Ctrl-].  While using Vim in a telnet session, if you use Ctrl-] to
+    jump to a tag, you will get the telnet prompt.  There are two ways
+    to avoid this problem:
+    
+    1. Map the telnet escape character to some other character using
+       the "-e <escape character>" telnet command line option
+
+    2. Disable the telnet escape character using the "-E" telnet
+       command line option.
+
+    Help keyword(s): telnet-CTRL-]
+
+
+
+
+
+
+
+
+VimTip 95: How do I pipe the output from ex commands into the text buffer?
+http://vim.sf.net/tips/tip.php?tip_id=95
+
+This is a request for a tip.  I need to be able to pipe the output of a :blah ex command into the vim text buffer for editing.  I wanted to do this many times for different reasons and could never find a way!
+
+I would just love to be able to do :hi --> textBuffer and examine the output at my own leasure scrolling up and down and using vim search commands on it.  Same thing for :set all, and other things.  Considering that cut and paste is horrible in windows, I can't for example do :set guioptions? then cut and paste!  So I have to retype it, or cut and paste from the help manual.  I really want to be able to pipe the output of ex commands into the text buffer.  Can someone help me?
+
+
+
+
+
+
+VimTip 96: Cooperation of Gvim and AutoCad [MTEXT]
+http://vim.sf.net/tips/tip.php?tip_id=96
+
+You can - like me :o)  - use gvim, like replacement of internal AutoCad MTEXT editor. You need switch variable MTEXTED to "gvim" (or maybe fullpath, something like "c:\vim\vim60aq\gvim" ), and to your _vimrc you can put line:
+
+autocmd BufRead,BufNewFile *.tmp source c:\vim\aacad.vim
+
+And when you edit MTEXT in acad, menu AutoCad will be for your use in gvim (only in INSERT and VISUAL mode)
+
+[NOTE: Only I can't start gvim like gvim -y (for any other person, not so accustomed vith gvim) or start gvim from gvim.lnk or gvim.bat (I'am using windows95) and automatic skip to INSERT mode -latest word star, on end of script- is without functionality(?) Maybe someone advise me?? ] 
+
+Well, script aacad.vim is listed here:
+
+"VIM menu for AutoCad's MTEXT editation
+"brz; mailto:brz@centrum.cz;  8. 8. 2001
+" Version Mk.I
+"--------------------------------------------------------------------------
+
+imenu &AutoCad.Insert.Space \~
+vmenu &AutoCad.Insert.Space <Esc>`<i\~<Esc>%
+imenu &AutoCad.Insert.Backslash \\
+vmenu &AutoCad.Insert.Backslash <Esc>`<i\\<Esc>%
+imenu &AutoCad.Insert.Brackets \{\}<Esc>F\i
+vmenu &AutoCad.Insert.Brackets <Esc>`>a\}<Esc>`<i\{<Esc>%
+imenu &AutoCad.Insert.Paragraph \P
+vmenu &AutoCad.Insert.Paragraph <Esc>`>a\P<Esc>%
+
+imenu &AutoCad.-SEP1- :
+
+imenu &AutoCad.Colour.Red \C1;
+vmenu &AutoCad.Colour.Red <Esc>`>a\C7;<Esc>`<i\C1;<Esc>%
+imenu &AutoCad.Colour.Yellow \C2;
+vmenu &AutoCad.Colour.Yellow <Esc>`>a\C7;<Esc>`<i\C2;<Esc>%
+imenu &AutoCad.Colour.Green \C3;
+vmenu &AutoCad.Colour.Green <Esc>`>a\C7;<Esc>`<i\C3;<Esc>%
+imenu &AutoCad.Colour.Cyan \C4;
+vmenu &AutoCad.Colour.Cyan <Esc>`>a\C7;<Esc>`<i\C4;<Esc>%
+imenu &AutoCad.Colour.Blue \C5;
+vmenu &AutoCad.Colour.Blue <Esc>`>a\C7;<Esc>`<i\C5;<Esc>%
+imenu &AutoCad.Colour.Violet \C6;
+vmenu &AutoCad.Colour.Violet <Esc>`>a\C7;<Esc>`<i\C6;<Esc>%
+imenu &AutoCad.Colour.Black \C7;
+vmenu &AutoCad.Colour.Black <Esc>`>a\C7;<Esc>`<i\C7;<Esc>%
+imenu &AutoCad.Colour.D_Grey \C8;
+vmenu &AutoCad.Colour.D_Grey <Esc>`>a\C7;<Esc>`<i\C8;<Esc>%
+imenu &AutoCad.Colour.L_Grey \C9;
+vmenu &AutoCad.Colour.L_Grey <Esc>`>a\C7;<Esc>`<i\C9;<Esc>%
+
+imenu &AutoCad.Font.Arial \fArial;
+vmenu &AutoCad.Font.Arial <Esc>`<i\fArial;<Esc>%
+imenu &AutoCad.Font.Symbol \Fsymbol;
+vmenu &AutoCad.Font.Symbol <Esc>`<i\Fsymbol;<Esc>%
+imenu &AutoCad.Font.RomanC \Fromanc;
+imenu &AutoCad.Font.RomanC <Esc>`<i\Fromanc;<Esc>%
+imenu &AutoCad.Font.RomanS \Fromans;
+vmenu &AutoCad.Font.RomanS <Esc>`<i\Fromans;<Esc>%
+imenu &AutoCad.Font.RomanD \Fromand;
+vmenu &AutoCad.Font.RomanD <Esc>`<i\Fromand;<Esc>%
+imenu &AutoCad.Font.RomanT \Fromant;
+vmenu &AutoCad.Font.RomanT <Esc>`<i\Fromant;<Esc>%
+
+imenu &AutoCad.Size.0_5x \H0.5x;
+vmenu &AutoCad.Size.0_5x <Esc>`<i\H0.5x;<Esc>%
+imenu &AutoCad.Size.1_5x \H1.5x;
+vmenu &AutoCad.Size.1_5x <Esc>`<i\H1.5x;<Esc>%
+imenu &AutoCad.Size.2x \H2x;
+vmenu &AutoCad.Size.2x <Esc>`<i\H2x;<Esc>%
+imenu &AutoCad.Size.3x \H3x;
+vmenu &AutoCad.Size.3x <Esc>`<i\H3x;<Esc>%
+
+imenu &AutoCad.Effects.Set_Out_1_5 \T1.5;
+vmenu &AutoCad.Effects.Set_Out_1_5 <Esc>`>a\T1;<Esc>`<i\T1.5;<Esc>%
+imenu &AutoCad.Effects.Set_Out_2 \T2;
+vmenu &AutoCad.Effects.Set_Out_2 <Esc>`>a\T1;<Esc>`<i\T2;<Esc>%
+
+imenu &AutoCad.Effects.-SEP3- :
+imenu &AutoCad.Effects.Tilt_15deg \Q15;
+vmenu &AutoCad.Effects.Tilt_15deg <Esc>`>a\Q0;<Esc>`<i\Q10;<Esc>%
+imenu &AutoCad.Effects.Tilt_20deg \Q20;
+vmenu &AutoCad.Effects.Tilt_20deg <Esc>`>a\Q0;<Esc>`<i\Q20;<Esc>%
+imenu &AutoCad.Effects.Tilt_30deg \Q30;
+vmenu &AutoCad.Effects.Tilt_30deg <Esc>`>a\Q0;<Esc>`<i\Q30;<Esc>%
+
+imenu &AutoCad.Effects.-SEP4- :
+imenu &AutoCad.Effects.Change_Width_0_5x \W0.5;
+vmenu &AutoCad.Effects.Change_Width_0_5x <Esc>`>a\W1;<Esc>`<i\W0.5;<Esc>%
+imenu &AutoCad.Effects.Change_Width_2x \W2;
+vmenu &AutoCad.Effects.Change_Width_2x <Esc>`>a\W1;<Esc>`<i\W2;<Esc>%
+
+imenu &AutoCad.Effects.-SEP5- :
+imenu &AutoCad.Effects.Justify_Down \A0;
+vmenu &AutoCad.Effects.Justify_Down <Esc>`<i\A0;<Esc>%
+imenu &AutoCad.Effects.Justify_Middle \A1;
+vmenu &AutoCad.Effects.Justify_Middle <Esc>`<i\A1;<Esc>%
+imenu &AutoCad.Effects.Justify_Up \A2;
+vmenu &AutoCad.Effects.Justify_Up <Esc>`<i\A2;<Esc>%
+imenu &AutoCad.Effects.Overlined_Characters \O\o<Esc>F\i
+vmenu &AutoCad.Effects.Overlined_Characters <Esc>`>a\O<Esc>`<i\o<Esc>%
+imenu &AutoCad.Effects.Underlined_Characters \L\l<Esc>F\i
+vmenu &AutoCad.Effects.Underlined_Characters <Esc>`>a\l<Esc>`<i\L<Esc>%
+imenu &AutoCad.Effects.Index_Top \S^;
+
+imenu &AutoCad.-SEP6- :
+imenu &AutoCad.Help <CR><CR>***Quit Editor: press Alt-F4 and 'No' ***<CR><CR>
+
+star
+
+
+
+
+
+
+
+VimTip 97: How do I add a current time string inside Vim?
+http://vim.sf.net/tips/tip.php?tip_id=97
+
+This is a request for a tip.
+Sometimes (eg. editing HTML pages) I need to add a timestamp string to my editing buffer.
+On UNIX systems, I can use  
+  :r!date  
+to get a localized date time string; but on Windows ('date' on Windows will query the user to input new date)
+or other platforms which does not have 'date' command, how do I get a timestamp easily?
+
+
+
+
+
+
+
+VimTip 98: Getting vim help from mailing lists and newsgroups.
+http://vim.sf.net/tips/tip.php?tip_id=98
+
+There have been a few "requests for tips" entered into the tips database lately.  If you have specific questions that aren't answered by the existing tips, there are a couple of resources that may be more appropriate:
+
+The mailing list vim@vim.org is for vim users.  If you send an email to vim-help@vim.org, you'll get a message back telling you how to subscribe, as well as how to request old messages and contact the list maintainer.  This mailing list is also archived at http://groups.yahoo.com/group/vim.
+
+The newsgroup comp.editors discusses many different editors, but most of the traffic is about vim.  When posting, it is appreciated if you include "vim" in the subject line.  The comp.editors newsgroup is archived at http://groups.google.com/groups?hl=en&safe=off&group=comp.editors.
+
+Using the tips database for asking questions is not likely to work well.  For example, if you ask a question titled "Searching for strings in a file" and I read this site and see that tip, I'm not going to read it if I already know how to search for strings in a file.  In comp.editors and vim@vim.org, people expect to find questions from others and are therefore more likely to see your questions.
+
+After finding the answer to your question, please consider whether it would make an appropriate tip, and if so, add it to the tips database.
+
+
+
+
+
+
+VimTip 99: How to tell what syntax highlighting group that is!
+http://vim.sf.net/tips/tip.php?tip_id=99
+
+Here's a (what should be a one-line) map to help you tell just what
+syntax highlighting groups the item under the cursor actually is:
+
+map  <F10>  :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+Once known you can override the current highlighting with whatever you want.
+If you're debugging a syntax highlighting file (a rare occupation), sometimes
+you'll wish to know the entire chain of syntax highlighting.  For that,
+check out
+
+http://www.erols.com/astronaut/vim/vimscript/hilinks.vim
+
+
+
+
+
+
+
+
+VimTip 100: Jump to tag (e.g. help topic) with German keyboard (PC)
+http://vim.sf.net/tips/tip.php?tip_id=100
+
+You're a newbie in vim and need some ":help"? Well, help.txt reads:
+
+"Jump to a subject:  Position the cursor on a tag between |bars| and hit CTRL-]."
+
+Unfortunately there is no "]" key on German keyboards. On Win32 try CTRL-+ (Strg-+), on Linux console I use CTRL-AltGr-9 (Strg-AltGr-9).
+
+Kind regards
+
+
+
+
+
+
+VimTip 101: Change automatically to the directory the file in the current buffer is in
+http://vim.sf.net/tips/tip.php?tip_id=101
+
+To change automatically to the directory the file in the current buffer is in
+add a line (below)  to the file .vimrc .
+The file .vimrc should have the following if-statement to control the autocmd feature:
+
+
+  if has("autocmd")
+	
+    < ... lot of autocmd stuff ... >
+	
+    " Change to the directory the file in your current buffer is in
+    autocmd BufEnter * :cd %:p:h
+	
+  endif " has("autocmd")
+
+
+Add the line above the endif and restart vim/gvim.
+
+
+
+
+
+
+
+VimTip 102: smart mapping for tab completion
+http://vim.sf.net/tips/tip.php?tip_id=102
+
+I'm used to complete words with <tab>, however when editing source I can't just map that to vim keyword completion because I sometime need to insert real tabs,
+since it mostly happen when at the beginning of the line or after a ; and before a one line comma (java, c++ or perl anyone...) I've come to find the following really usefull
+This is how you can map the <tab> key in insert mode while still being able to use it when at the start of a line or when the preceding char is not a keyword character.
+in a script file in a plugin directory or in your .vimrc file:
+first define a function which returns a <tab> or a <C-N> depending on the context:
+
+function InsertTabWrapper()
+      let col = col('.') - 1
+      if !col || getline('.')[col - 1] !~ '\k'
+          return "\<tab>"
+      else
+          return "\<c-p>"
+      endif
+endfunction
+
+then define the appropriate mapping:
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+
+the trick here is the use of the <c-r>= in insert mode to be able to call your function without leaving insert mode.
+:help i_CTRL-R
+Benoit
+
+
+
+
+
+
+VimTip 103: Move to next/previous line with same indentation
+http://vim.sf.net/tips/tip.php?tip_id=103
+
+When working with Python and other languages which don't use braces, it's useful to be able to jump to and from lines which have the same indentation as the line you are currently on.
+
+nn <M-,> k:call search ("^". matchstr (getline (line (".")+ 1), '\(\s*\)') ."\\S", 'b')<CR>^
+nn <M-.> :call search ("^". matchstr (getline (line (".")), '\(\s*\)') ."\\S")<CR>^
+
+will map Alt-< and Alt-> in Normal mode to upward and downward searching for lines with the same indent as the current line.
+
+
+
+
+
+
+VimTip 104: using vim to complement Perl's DBI::Shell
+http://vim.sf.net/tips/tip.php?tip_id=104
+
+DBI::Shell is a Perl module that is used as a shell interface to Perl's popular DBI (database interface) package. Forget your favorite SQL navigation gui and give this method a shot. This has only been tested in UNIX.
+
+1. run dbish (runs DBI::Shell; installed with DBI::Shell) and connect to any database
+2. in dbish, set /format box
+3. enter your query
+4. to execute query, type "/ | vim -"
+
+This runs the query and pipes the output to the standard input of vim. Here are some follow-up tips:
+-use gvim instead of vim so a new window will pop up
+-set nowrap once in vim
+-make a syntax highlighting file for me!
+
+-Adam Monsen
+
+
+
+
+
+
+VimTip 105: combining move and scroll
+http://vim.sf.net/tips/tip.php?tip_id=105
+
+I sometimes found myself moving down a few lines with j, then scrolling down
+about the same number of lines with <C-E> to put the cursor in roughly the
+same place as it started.  I decided I wanted to map <C-J> (and <C-K>,
+respectively) to the move-and-scroll operation.  First, I did
+
+    :map <C-J> <C-E>j
+
+This was pretty good, but behaved funny at the beginning and end of files.
+Then, I realized that <C-D> already combined move and scroll, so I figured
+that giving <C-D> a count of 1 would do it:
+
+    :map <C-J> 1<C-D>
+
+Unfortunately, this permanently attaches a count to <C-D> (ugh!), so I have
+to undo that:
+
+    :map <C-J> 1<C-D>:set scroll=0<CR>
+
+This has the drawback of not necessarily resetting scroll to its original
+value, but since I never change scroll, it's good enough for me.  It would
+be nice if there were a version of <C-D> that did not have the side-affect
+of changing scroll.
+
+Happy vimming,
+Andrew
+
+
+
+
+
+
+
+VimTip 106: Mail signature rotation: Supersimple one-line solution
+http://vim.sf.net/tips/tip.php?tip_id=106
+
+Hallo,
+next solution for _most_simple_ signature rotater: 
+You can only put one line to your .vimrc || _vimrc:
+map <Leader>ms :e c:\sign.txt<CR>ggV/--<CR>k"*xG$a<C-R><C-O>*<Esc>:w<CR>:bd<CR>G$a<C-M><Esc>"*P
+
+Must exist file (from eg above) c:\sign.txt, with content:
+--
+first signature
+--
+second signature
+--
+third signature
+--
+
+When You finished mail, only call shortcut \ms and 'first signature' will be insert in your mail. In c:\sign.txt will be first signature pushed to the end of this file. When You want use other signature, only press 'u' and \ms again
+(Or You can change \ms to e.g. <F12>, indeed. ) You can change this and append one part like 'basic' from command and append 'changing' part from .signature file, as you like...
+Ok, one unpleasant thing is here: your signature must not contain '--' (signature separator)...
+Anyhow, I find it useful
+brz* <brz@centrum.cz>
+http://brz.d2.cz/
+
+
+
+
+
+
+
+VimTip 107: C/C++: convert enum to string table
+http://vim.sf.net/tips/tip.php?tip_id=107
+
+When testing your own C/C++ programs you sometimes wish to have a trace output,
+which shows you, which enum value is used.
+You can do this by creating a string table for that enum type,
+which contains the enum identifyer as a string.
+e.g.
+printf ("%s", MyEnumStringTable [ MyEnumVal] );
+
+You can create the complete string table by 
+- marking the lines containing the complete typedef enum
+- select menu C/C++.transform enum2Stringtab
+
+You can create string table entries by 
+- marking the lines within the typedef enum
+- select menu C/C++.transform enum2String
+
+This makes it easy to keep the enum (on changes) consistent to the string table.
+
+Add the following lines to your _GVIMRC file:
+31amenu C/C++.transform\ enum2Stringtab 	:s#[ 	]*\\(\\w\\+\\)#/* \\1	*/	"\\1"#<CR>o};<ESC>uOstatic const char* const Names[] = {<ESC><CR>/sdfsdf<CR>
+31vmenu C/C++.transform\ enum2Stringtab 	:s#[ 	]*\\(\\w\\+\\)#/* \\1	*/	"\\1"#<CR>o};<ESC>uOstatic const char* const Names[] = {<ESC><CR>/sdfsdf<CR>
+
+31amenu C/C++.transform\ enum2String 	:s#[ 	]*\\(\\w\\+\\)#/* \\1	*/	"\\1"#<CR>o}<ESC>/sdfsdf<CR>
+31vmenu C/C++.transform\ enum2String 	:s#[ 	]*\\(\\w\\+\\)#/* \\1	*/	"\\1"#<CR>o}<ESC>/sdfsdf<CR>
+
+hint: '/sdfsdf' is added for deactivating search highlighting,
+ok, you'll sure find a better way to do this.
+
+
+
+
+
+
+VimTip 108: Toggle a fold with a single keystroke
+http://vim.sf.net/tips/tip.php?tip_id=108
+
+When viewing/editing a folded file, it is often needed to inspect/close some fold.
+To speed up these operation use the following (put in your $HOME/.vimrc):
+
+" Toggle fold state between closed and opened. 
+"
+" If there is no fold at current line, just moves forward.
+" If it is present, reverse it's state.
+fun! ToggleFold()
+	if foldlevel('.') == 0
+		normal! l
+	else
+		if foldclosed('.') < 0
+			. foldclose
+		else
+			. foldopen
+		endif
+	endif
+	" Clear status line
+	echo
+endfun
+
+" Map this function to Space key.
+noremap <space> :call ToggleFold()<CR>
+
+
+See :help folding for more information about folding.
+
+
+
+
+
+
+
+VimTip 109: jump between files
+http://vim.sf.net/tips/tip.php?tip_id=109
+
+Often I know I'm likely to edit many files. I run 'vim *.pl' and get a whole bunch of open files.
+
+To make jumping between files to a pleasure, I defined to mapss:
+
+map <f1> :previous<cr>
+map <f2> :next<cr>
+
+Press F1 to go back and F2 to go forward.
+
+-- 
+Kirill
+
+
+
+
+
+
+VimTip 110: text->html table converter.
+http://vim.sf.net/tips/tip.php?tip_id=110
+
+Below are two functions and a mapping which will convert lines of plain text into
+HTML table code.
+For example, you have several lines like:
+-----------------------------------------------
+1
+2
+3
+
+4
+5
+6
+---------------------------------------------------
+by visualizing all the 7 lines and press <F5>, you can change the text into
+<table><tr>
+   <td>1</td>
+   <td>2</td>
+   <td>3</td>
+</tr><tr>
+   <td>4</td>
+   <td>5</td>
+   <td>6</td>
+</tr></table>
+which will eventually render into a table. 
+So the rule is:
+Every line is a table item, every empty line means starting of a new table row.
+
+
+
+"A text->html table code converter
+"By: Wenzhi Liang wzhliang@yahoo.com
+"You can distribute/change this file freely as long as you keep the title area. Thanks
+
+func Table()
+	let end=line("'>")
+	let start=line("'<")
+	let i=start
+
+	wh i <= end
+		exe ":" . i
+		let e=Empty()
+		if e == 1
+			exe "normal I</tr><tr>"
+		else
+			exe "normal I<td>A</td>>>"
+		endif
+		let i=i+1
+	endwh
+
+	exe "normal o</tr></table><<"
+	exe ":" . start
+	exe "normal O<table><tr><<"
+endfunc
+
+vmap <F5> <ESC>:call Table()<CR>
+
+func Empty()
+	let line_nr= line (".")
+	let a=getline ( line_nr )
+	let m=match(a, "\\S")
+	if m == -1 
+		return 1
+	else
+		return 0
+	endif
+endfunc
+
+
+
+
+
+
+VimTip 111: Printing with syntax highlighting independent of your normal highlighting
+http://vim.sf.net/tips/tip.php?tip_id=111
+
+I have found it undesirable to use :hardcopy directly because it uses the current syntax highlighting to determine how to print the text.  For example, I like to print comments in italics, but I don't like italic fonts on the screen. This tip will show you how to set up a colorscheme for printing and use it only when you print.
+
+I copied an existing colorscheme to ~/.vim/colors/print.vim, and changed all the lines like this:
+
+  highlight Normal ctermbg=DarkGrey ctermfg=White guifg=White guibg=grey20
+to this:
+  highlight clear Normal
+
+Then I set the syntax groups how I wanted them to be printed on the printer:
+
+  highlight Comment        term=italic    cterm=italic    gui=italic
+  highlight Constant       term=bold      cterm=bold      gui=bold
+  etc....
+
+I then defined the following command in my .vimrc file:
+
+command! -nargs=* Hardcopy call DoMyPrint("<args>")
+
+And, finally, I defined this function in my .vimrc:
+
+function DoMyPrint(args)
+    let colorsave=g:colors_name
+    color print
+    exec "hardcopy ".a:args
+    exec 'color '.colorsave
+endfunction
+
+
+After this is complete, you can do:
+   :Hardcopy > /tmp/out.ps
+or just
+   :Hardcopy
+(Note the capital H)
+
+
+
+
+
+
+VimTip 112: Back and forth between indented lines again
+http://vim.sf.net/tips/tip.php?tip_id=112
+
+
+Paul Wright posted a tip which explained how to jump back and forth between lines with the same indentation level. I do this a lot, so I came up with this slightly more comprehensive solution.
+
+The example mappings below work as follows:
+
+[l and ]l jump to the previous or the next line with the same indentation level as the one you're currently on.
+
+[L and ]L jump to the previous or the next line with an indentation level lower than the line you're currently on.
+
+These movements also work in visual mode and (only as of one of the 6.0 alpha versions) in operator pending mode, meaning that you can do a d]l. The motion is specified as being exclusive when in operator pending mode.
+
+When might you use this? If you're writing programs in Python, Haskell, or editing XML files, they will be very useful. E.g. in XML you can jump to the outer enclosing tag, or the next matching tag. I use it for practically anything I edit, so it's not limited to this.
+
+
+
+"
+" NextIndent()
+"
+" Jump to the next or previous line that has the same level or a lower
+" level of indentation than the current line.
+"
+" exclusive (bool):   true:  Motion is exclusive
+"                     false: Motion is inclusive
+" fwd (bool):         true:  Go to next line
+"                     false: Go to previous line
+" lowerlevel (bool):  true:  Go to line with lower indentation level
+"                     false: Go to line with the same indentation level
+" skipblanks (bool):  true:  Skip blank lines
+"                     false: Don't skip blank lines
+
+function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
+	let line = line('.')
+	let column = col('.')
+	let lastline = line('$')
+	let indent = indent(line)
+	let stepvalue = a:fwd ? 1 : -1
+
+	while (line > 0 && line <= lastline)
+		let line = line + stepvalue
+		if (	! a:lowerlevel && indent(line) == indent ||
+				\ a:lowerlevel && indent(line) < indent)
+			if (! a:skipblanks || strlen(getline(line)) > 0)
+				if (a:exclusive)
+					let line = line - stepvalue
+				endif
+				exe line
+				exe "normal " column . "|"
+				return
+			endif
+		endif
+	endwhile
+endfunc
+
+
+" Moving back and forth between lines of same or lower indentation.
+nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<cr>
+nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<cr>
+nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<cr>
+nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<cr>
+vnoremap <silent> [l <esc>:call NextIndent(0, 0, 0, 1)<cr>m'gv''
+vnoremap <silent> ]l <esc>:call NextIndent(0, 1, 0, 1)<cr>m'gv''
+vnoremap <silent> [L <esc>:call NextIndent(0, 0, 1, 1)<cr>m'gv''
+vnoremap <silent> ]L <esc>:call NextIndent(0, 1, 1, 1)<cr>m'gv''
+onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<cr>
+onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<cr>
+onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<cr>
+onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<cr>
+
+
+
+
+
+
+
+VimTip 113: Translator in vim (Windows solution)
+http://vim.sf.net/tips/tip.php?tip_id=113
+
+Hallo, today I found script "translate.vim", but on Windows this will be probably difficult to run it (maybe with Cygwin is it possible). I've simpler solution of keymap for vim interlacing to dictionary: 
+Must exist file with vocabulary (e.g. "an-cs.txt"), which is called for word under cursor. In 'normal' is only displayed window with translations, in 'insert' is word under cursor deleted and is insert selected form of word from translantion window (select it by mouse and than press right button: It works fine on W2k). Key _F12_ is looking for "word", shifted _S-F12_ is looking for "pattern". 
+For windows is needed agrep, which is localy placed on http://www.tgries.de/agrep/index.html
+
+map <F12> b"*yw<Esc>:! c:/bin/agrep -wih <C-R>* "c:/dict/an-cs.txt"<CR>
+imap <F12> <Esc>b"*yw<Esc>:! c:/bin/agrep -wih <C-R>* "c:/dict/an-cs.txt"<CR>dwi <C-R>* 
+map <S-F12> b"*yw<Esc>:! c:/bin/agrep -ih <C-R>* "c:/dict/an-cs.txt"<CR>
+imap <S-F12> <Esc>b"*yw<Esc>:! c:/bin/agrep -ih <C-R>* "c:/dict/an-cs.txt"<CR>dwi <C-R>*
+	
+brz* <brz@centrum.cz>
+
+
+
+
+
+
+VimTip 114: Browsing by  paragraph
+http://vim.sf.net/tips/tip.php?tip_id=114
+
+It can be done by reaching the blank lines in up and down directions just by pressing
+
+{    ----  For going to the blank line above the paragraph
+}    ----  For going to the blank line below the paragraph
+
+
+
+
+
+
+VimTip 115: Browsing by  paragraph
+http://vim.sf.net/tips/tip.php?tip_id=115
+
+It can be done by reaching the blank lines in up and down directions just by pressing
+
+{    ----  For going to the blank line above the paragraph
+}    ----  For going to the blank line below the paragraph
+
+
+
+
+
+
+VimTip 116: Search all occurances of the word under cursor in all the open files
+http://vim.sf.net/tips/tip.php?tip_id=116
+
+Sometimes it is useful to know all the occurances of the word under cursor in all the open files. This can be done by pressing [I ( bracket and capital I ) . it shows the results found in the command window.
+
+
+
+
+
+
+
+VimTip 117: FAST SEARCH ACROSS THE PROJECT
+http://vim.sf.net/tips/tip.php?tip_id=117
+
+Searching for a word across the project wastes most of the developres time, which can be avoided by the use of GNU Id_utils with VIM. 
+The procedure needs to be followed is as follows:
+download GNU idutils 3.2d (mkid,lid,fid,fnid,xtokid) 
+from http://www.mossbayeng.com/~ron/vim/builds.html
+
+uncompress and store these files in the directory from where vim is running.
+
+goto the top level directory of the project, and run mkid, it will create ID file in that directory (As it is time consuming process, so be patient). copy this file ID to the directory from where vim is running.
+
+USAGE:
+
+Put these lines in your .vimrc:
+
+	map _u :call ID_search()<Bar>execute "/\\<" . g:word . "\\>"<CR>
+	map _n :n<Bar>execute "/\\<" . g:word . "\\>"<CR>
+
+	function ID_search()
+	  let g:word = expand("<cword>")
+	  let x = system("lid --key=none ". g:word)
+	  let x = substitute(x, "\n", " ", "g")
+	  execute "next " . x
+	endfun
+
+To use it, place the cursor on a word, type "_u" and vim will load the file
+that contains the word.  Search for the next ocurance of the word in the same
+file with "n".  Go to the next file with "_n".
+
+The mapping of "_u" and "_n" can be done to some other key as per your preference but I use ^K and ^L for this purpose.
+
+
+
+
+
+
+VimTip 118: Configuring gVim as Internet Explorer 'View Source' editor
+http://vim.sf.net/tips/tip.php?tip_id=118
+
+Within the registry, you can specify the source editor to be used by Internet Explorer when {View|Source} is selected. Unfortunately, you can't specify a quoted filename argument here, i.e. "%1". The editor specified is supposed to handle filenames which contain spaces. This will cause problems for Vim because Vim treats each space as an argument separator. If an unquoted filename contains spaces, Vim treats the filename as multiple arguments and will open multiple files instead of one. To workaround this problem a quoted filename has to be passed to Vim. This can be done by creating the following Visual Basic Script file gVim.vbs:
+
+'--- gVim.vbs -----------------------------------------------------------------
+'function: Start gvim, combining multiple arguments to single file argument.
+'changes:  20010905: Quoted 'oWShell.Run' filename argument, allowing spaces.
+'          20010518: Created.
+'author:   Freddy Vulto <fvu@fvu.myweb.nl>
+
+  ' Making variable declaration mandatory
+option explicit
+
+dim oWShell, sArg, sFile
+
+  ' Create script object
+set oWShell = CreateObject("wscript.shell")
+  ' Loop through arguments
+for each sArg in wscript.arguments
+    ' Add argument to filename
+  sFile = sFile & sArg & " "
+next
+  ' Remove excess space
+sFile = Trim(sFile)
+  ' Run Vim with file argument.  Additional arguments:
+  ' -R: View file readonly
+  ' -c "set syntax=html": Use HTML syntax-highlighting
+  '    NOTE: Use "-c ""set ft=html""" to make it work for Vim v6.
+oWShell.Run _
+  """D:\Programs\Vim\Vim58\gvim.exe """ & _
+  "-R """ & sFile & """ " & _
+  "-c ""set syntax=html"""
+
+  ' Destroy script object
+set oWShell = NOTHING
+
+
+The source editor now can be specified by adding the following key to the registry:
+
+
+HKEY_LOCAL_MACHINE
+|- Software
+   |- Microsoft
+      |- Internet Explorer
+         |- View Source Editor
+            |- Editor Name       (Default) = D:\Programs\Vim\gvim.vbs
+
+
+Freddy Vulto <fvu@fvu.myweb.nl>
+http://fvu.myweb.nl/Projects/Vim/Web/vim.htm
+
+
+
+
+
+
