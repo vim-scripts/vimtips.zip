@@ -1,6 +1,6 @@
 " File:  "totd.vim"
 " URL:  http://vim.sourceforge.net/script.php?script_id=88
-" LAST MODIFICATION: "Tue, 19 Nov 2002 06:59:45 Eastern Standard Time ()"
+" LAST MODIFICATION: "Tue, 19 Nov 2002 16:17:43 Eastern Standard Time ()"
 " Sourcing this script will display a "Tip Of The Day" when starting vim.
 " Requires:  Vim version 6.0 or later.
 "
@@ -91,8 +91,6 @@ endfun
 " Call this when the plugin is first installed, and after any time the user
 " runs :helptags to rebuild doc/tags .
 fun! s:Install(rtDir)
-  " Add the tags for doc/totd.txt .
-  execute "helptags" a:rtDir . "/doc"
   let buf0 = bufnr("%")
   " Edit the tags file.
   execute "edit" a:rtDir . "/doc/tags"
