@@ -1,5 +1,5 @@
 " File:  "vimtips.vim"
-" LAST MODIFICATION: "Thu, 20 Sep 2001 10:55:34 Eastern Daylight Time ()"
+" LAST MODIFICATION: "Thu, 20 Sep 2001 11:33:38 Eastern Daylight Time ()"
 " Sourcing this script will display a "Tip Of The Day" when starting vim.
 " Requires:  Vim version 6.0 or later.
 "
@@ -58,20 +58,25 @@ fun! Vimtips()
   let prevline = matchstr(prevline, '\d\+$')
   if !quit
     " Open the tips file and find the next tip:
+    let save_errmsg = v:errmsg
+    let v:errmsg = ""
     silent! help vimtips.txt
-    execute prevline
-    call search('^VimTip\s\+\d\+:', 'w')
-    " Position the tip at the top of the screen:
-    normal! zt
-    " Save the new line number:
-    let prevline = line(".")
-    " Go back to vimtips.vim:
-    execute "normal! \<C-W>p"
-    " Update the modelines.
-    silent! execute 's/' . linepat . '/\1' . prevline
-    $
-    call search(datepat, "bW")
-    silent! execute 's/' . datepat . '/\1' . currdate
+    if v:errmsg == ""
+      execute prevline
+      call search('^VimTip\s\+\d\+:', 'w')
+      " Position the tip at the top of the screen:
+      normal! zt
+      " Save the new line number:
+      let prevline = line(".")
+      " Go back to vimtips.vim:
+      execute "normal! \<C-W>p"
+      " Update the modelines.
+      silent! execute 's/' . linepat . '/\1' . prevline
+      $
+      call search(datepat, "bW")
+      silent! execute 's/' . datepat . '/\1' . currdate
+    endif " v:errmsg == ""
+    let v:errmsg = save_errmsg
   endif " !quit
   update
   bwipe
