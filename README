@@ -1,0 +1,13 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=88
+
+     Whenever you start Vim (but no more than daily) the script will open a
+help window with a Vim tip. You must download the tips separately, from
+http://vim.sourceforge.net/tips/tip_download.php
+
+    After installation, you can get the next tip with
+
+:TipOfTheDay
+
+(usual abbreviation rules apply) or go to the top of the tips file with
+
+:help vimtips.txt

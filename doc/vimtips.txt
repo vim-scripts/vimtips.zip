@@ -1,0 +1,769 @@
+*vimtips.txt*
+This file comes from the Vim Tips database.  
+These tips were downloaded on r
+More tips can be found at http://vim-tips.sourceforge.net/
+by choosing "download".
+
+
+
+VimTip 1: the super star
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=1
+
+When a discussion started about learning vim on the vim list Juergen Salk mentioned the "*" key as something that he wished he had know earlier. When I read the mail I had to go help on what the heck the "*" did. I also wish I had known earlier...
+
+Using the "*" key while in normal mode searches for the word under the cursor.
+
+If that doesn't save you a lot of typing, I don't know what will.
+
+
+
+
+
+
+VimTip 2: easy edit of files in the same directory
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=2
+
+It was often frustrating when I would open a file deep in the code tree and then realize I wanted to open another file in that same directory. Douglas Potts taught me a nice way to do this. Add the following snipit to your vimrc:
+
+"   Edit another file in the same directory as the current file
+"   uses expression to extract path from current file's path
+"  (thanks Douglas Potts)
+if has("unix")
+    map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
+else
+    map ,e :e <C-R>=expand("%:p:h") . "\\" <CR>
+endif
+
+Then when you type ,e in normal mode you can use tab to complete to the file. You can also expand this to allow for spitting, etc. Very very nice.
+
+
+
+
+
+
+VimTip 3: use vim to quickly compile java files
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=3
+
+For a number of years I used vim on an SGI box. When I left my job at SGI I went to a company that developed on PCs. For 2 years I used IDEs. I was unhappy. I was frustrated. I couldn't figure out why. (Beyond my machine crashing twice a day.) Finally I upgraded to windows 2000 (kind of stable!) and started using vim as an IDE. All was good. Here is how you use vim to compile your java:
+
+1. While I'm sure this works with javac, javac is slow slow slow. So download the Jikes complier first. (Jikes is from ibm, search on google for jikes and you will find it..available on most platforms.)
+
+2. Add the following to your vimrc:
+
+set makeprg=jikes\ -nowarn\ -Xstdout\ +E\ %
+set errorformat=%f:%l:%c:%*\\d:%*\\d:%*\\s%m 
+
+3. When you are editing a java file type :make and it will compile the current file and jump you to the first error in the file (if any). Read ":help quickfix" for how to move between errors.
+
+To setup your classpath environment either launch gvim from a shell that has your classpath/path setup or use the "let" command to configure it in your vimrc.
+
+
+
+
+
+
+VimTip 4: Any word completion
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=4
+
+Either when programming or writing, I tend to have some identifiers or words that I use all the time. By sheer accident, I noticed the 'ctrl-n' command, that will attempt to complete the word under the cursor. Hit it once, and it will try to complete it with the first match in the current file. If there is no match, it will (at least in the case of C code) search through all files included from the current one. Repeated invocations will cycle through all found matches.
+
+
+
+
+
+
+VimTip 5: Quickly searching for a word
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=5
+
+
+To search for a word under the cursor in the current file you
+can use either the "*" or "#" keys.
+
+The "*" key will search for the word from the current cursor 
+position to the end of the file. The "#" key will search for the 
+word from the current cursor position to the top of the file.
+
+Note that the above two keys will search for the whole word and not
+the partial word.  This is equivalent to using the \<word\> pattern
+in the search commands (/ and ?).
+
+To search for partial matches, you can use the "g*" and "g#" key
+sequence.
+
+You can also use the mouse to search for a word.  This will only
+work in the GUI version of VIM (gvim) or a console version
+of VIM in an xterm which accepts a mouse. Also, the 'mousemodel'
+should be set to 'extend'.  Add the following line to your .vimrc:
+
+set mousemodel=extend
+
+To search for a word under the cursor from the current cursor
+position to the end of the file, press the shift key and click
+on the word using the left mouse button.  To search in the opposite
+direction, press the shift key and click on the word using the
+the right mouse button.
+
+To get more help on these, use
+
+:help *
+:help #
+:help g*
+:help g#
+:help <S-LeftMouse>
+:help <S-RightMouse>
+
+
+
+
+
+
+
+VimTip 6: Using the % key
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=6
+
+
+The % key can be used
+
+1. To jump to a matching opening or closing parenthesis, square 
+   bracket or a curly brace i.e. ([{}])
+2. To jump to start or end of a C-style comment /* */.  
+3. To jump to a matching #if, #ifdef, #else, #elif, #endif C 
+   preprocessor conditionals.
+
+To get more information about this, do
+
+             :help %
+
+The % key can be extended to support other matching pairs by
+modifying the "matchpairs" option.  Read the help on
+
+             :help matchpairs
+
+
+
+
+
+
+
+VimTip 7: Jumping to the start and end of a code block
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=7
+
+
+To jump to the beginning of a C code block (while, switch, if etc),
+use the [{ command.
+
+To jump to the end of a C code block (while, switch, if etc),
+use the ]} command.
+
+The above two commands will work from anywhere inside the code
+block.
+
+To jump to the beginning of a parenthesis use the [( command.
+
+To jump to the end of a parenthesis use the ]) command.
+
+To get more help on these commands, do
+
+:help [{
+:help ]}
+:help [(
+:help ])
+
+
+
+
+
+
+
+VimTip 8: Jumping to the declaration of a local/global variable
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=8
+
+
+'gd' command: 
+To jump to the declaration of a local variable in a C program, 
+position the cursor on the name of the variable and use the
+gd command.
+
+'gD' command:
+To jump to the declaration of a global variable in a C program, 
+position the cursor on the name of the variable and use the
+gD command.
+
+
+
+
+
+
+VimTip 9: Displaying a variable/macro definition
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=9
+
+
+To display the definition of a variable, place the cursor on the
+variable and use the [i command.  To display a macro definition,
+place the cursor on the macro name and use the [d command.
+Note that these commands will work most of the time (not all the
+time).  To get more help on these commands, use
+
+:help [i
+:help [d
+
+
+
+
+
+
+VimTip 10: Jumping to previosuly visited locations in a file
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=10
+
+
+Vim remembers all the locations visited by you in a file in a session.
+You can jump to the older locations by pressing the Ctrl-O key.  You
+can jump to the newer locations by pressing the Ctrl-I or the <Tab>
+key.
+
+To get more help on these keys, use
+
+:help CTRL-O
+:help CTRL-I
+:help jump-motions
+
+
+
+
+
+
+
+VimTip 11: Completing words quicky in insert mode
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=11
+
+
+In Insert mode, press the Ctrl-p or Ctrl-n key to complete part of 
+a word that has been typed.
+
+This is useful while typing C programs to complete long variable and
+function names.  This also helps in avoiding typing mistakes.
+
+Note that using the 'complete' option, you can complete keywords
+defined in one of the include files, tag file, etc.
+
+To get more help on this, use
+
+:help i_Ctrl-N
+:help i_Ctrl-P
+:help ins-completion
+:help complete
+
+
+
+
+
+
+
+VimTip 12: Converting tabs to spaces
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=12
+
+
+To insert space characters whenever the tab key is pressed, set the
+'expandtab' option:
+
+        set expandtab
+
+With this option set, if you want to enter a real tab character use
+Ctrl-V<Tab> key sequence.
+
+To control the number of space characters that will be inserted when
+the tab key is pressed, set the 'tabstop' option.  For example, to
+insert 4 spaces for a tab, use:
+
+        set tabstop=4
+
+After the 'expandtab' option is set, all the new tab characters entered
+will be changed to spaces.  This will not affect the existing tab
+characters.  To change all the existing tab characters to match the
+current tab settings, use
+
+        :retab
+
+To change the number of space characters inserted for indentation, use
+the 'shiftwidth' option:
+
+        set shiftwidth=4
+
+For example, to get the following coding style,
+        - No tabs in the source file
+        - All tab characters are 4 space characters
+
+use the following set of options:
+
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+
+Add the above settings to your .vimrc file.
+
+To get more help on these options, use
+:help tabstop
+:help shiftwidth
+:help expandtab
+
+
+
+
+
+
+
+VimTip 13: Incremental search
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=13
+
+
+To move the cursor to the matched string, while typing the search
+string, set the following option in the .vimrc file:
+
+        set incsearch
+
+You can complete the search by pressing the Enter key.  To cancel
+the search, press the escape key.
+
+VimTip 14: Highlighting all the search pattern matches
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=14
+
+
+To highlight all the search pattern matches in a file set the
+following option:
+
+        :set hlsearch
+
+After this option is set, if you search for a pattern, all the
+matches in the file will be highlighted in yellow.
+
+To disable the highlighting temporarily, use the command
+
+        :nohlsearch
+
+This command will remove the highlighting for the current search.
+The highlighting will come back for the next search.
+
+To disable the highlighting completely, set the following option:
+
+        :set nohlsearch
+
+By default, the hlsearch option is turned off.
+
+To get more help on this option, use
+
+:help 'hlsearch'
+:help :nohlsearch
+
+
+
+
+
+
+
+VimTip 15: Displaying status line always
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=15
+
+
+To display the status line always, set the following option in
+your .vimrc file:
+
+        set laststatus=2
+
+The advantage of having the status line displayed always is, you
+can see the current mode, file name, file status, ruler, etc.
+
+To get more help on this, use
+
+:help laststatus
+
+
+
+
+
+
+
+VimTip 16: Avoiding the "Hit ENTER to continue" prompts
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=16
+
+
+To avoid the "Hit ENTER to continue" prompt, use the 'shortmess'
+option.  Add the following line to your .vimrc file:
+
+    set shortmess=a
+
+Also, you can increase the height of the command line to 2
+
+    set cmdheight=2
+
+The default command height is 1.
+
+To get more help on these options, use
+
+:help hit-enter
+:help shortmess
+:help cmdheight
+
+
+
+
+
+
+
+VimTip 17: Erasing previosuly entered characters in insert mode
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=17
+
+
+In insert mode, to erase previously entered characters, set the
+following option:
+
+        set backspace=2
+
+By default, this option is empty.  If this option is empty, in
+insert mode, you can not erase characters entered before this
+insert mode started.  This is the standard Vi behavior.
+
+To get more help on this, use
+
+:help 'backspace'
+
+
+
+
+
+
+
+VimTip 18: Cleanup your HTML
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=18
+
+From Johannes Zellner on the vim list:
+
+You can use vim's makeprg and equalprg to clean up HTML. First download html tidy from http://www.w3.org/People/Raggett/tidy/. Then use the following commands.
+
+vim6?
+exe 'setlocal equalprg=tidy\ -quiet\ -f\ '.&errorfile
+setlocal makeprg=tidy\ -quiet\ -e\ %
+
+vim5?
+exe 'set equalprg=tidy\ -quiet\ -f\ '.&errorfile
+set makeprg=tidy\ -quiet\ -e\ %
+
+At this point you can use make to clean up the full file or you can use = to clean up sections.
+
+:help =
+:help equalprg
+:help makeprg
+
+
+
+
+
+
+
+
+VimTip 19: line numbers...
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=19
+
+I have started doing all my code reviews on a laptop because of the number command.
+
+:set number will put line numbers along the left side of a window
+
+:help number
+
+
+
+
+
+
+VimTip 20: Are *.swp and *~ files littering your working directory?
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=20
+
+Have you ever been frustrated at swap files and backups cluttering
+up your working directory? 
+
+Untidy:
+  ons.txt
+  ons.txt~
+  README
+  README~
+  tester.py
+  tester.py~
+
+Here are a couple of options that can help:
+
+  set   backupdir=./.backup,.,/tmp
+  set   directory=.,./.backup,/tmp
+
+This way, if you want your backups to be neatly grouped, just 
+create a directory called '.backup' in your working directory. 
+Vim will stash backups there. The 'directory' option controls
+where swap files go. If your working directory is not writable,
+Vim will put the swap file in one of the specified places.
+
+
+
+
+
+
+VimTip 21: easy pasting to windows apps
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=21
+
+In Vim, the unnamed register is the " register, and the Windows
+Clipboard is the * register. This means that if you yank something,
+you have to yank it to the * register if you want to paste it into
+a Windows app. If this is too much trouble, set the 'clipboard' 
+option to 'unnamed'. Then you always yank to *.
+
+So pasting to windows apps doesn't require prefixing "* :
+
+  set   clipboard=unnamed
+
+
+
+
+
+
+
+VimTip 22: handle common typos for :commands
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=22
+
+I frequently hold the shift key for too long when typing, for instance :wq, and end up with :Wq.  Vim then whines "Not an editor command: Wq"
+
+In my .vimrc, I have taught vim my common typos:
+command! Q  quit
+command! W  write
+command! Wq wq
+" this one won't work, because :X is already a built-in command
+command! X  xit
+
+
+
+
+
+
+VimTip 23: Vim xterm title
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=23
+
+Check out your .vimrc. If 'set notitle' is an entry, comment it out with a quotation mark ("). Now your xterm should inherit the title from Vim.            e.g. 'Vim - ~/.vimrc'. This can be quite nice when programming and editing lots of files at the same time.
+by [jonasbn@wanadoo.dk]
+
+
+
+
+
+
+VimTip 24: changing the default syntax highlighting
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=24
+
+     Here are some pointers to the vim documentation.  Notice that the mechanism is different in vim 6.0 and vim 5.x.
+
+1. I want *.foo files to be highlighted like HTML files.
+
+:help new-filetype  http://www.vim.org/html/autocmd.html#new-filetype
+
+2. I want to define a syntax file for *.bar files.  Read the above and also
+
+:help mysyntaxfile  http://www.vim.org/html/syntax.html#mysyntaxfile
+
+3. I want to make a few changes to the existing syntax highlighting.  Depending on the x in 5.x, either read the above and page down a few screens, or you may be able to skip right to
+
+:help mysyntaxfile-add  http://www.vim.org/html/syntax.html#mysyntaxfile-add
+
+4. I want to change some of the colors from their defaults.  Again, read
+
+:help mysyntaxfile  http://www.vim.org/html/syntax.html#mysyntaxfile
+
+
+
+
+
+
+VimTip 25: color highlighting on telnet (esp w/ SecureCRT)
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=25
+
+The following settings in .vimrc will enable color highlighting when using SecureCRT and may work on other telnet packages. The terminal type should be selected as ANSI and color enabled.
+
+
+if !has("gui_running")
+set t_Co=8
+set t_Sf=^[[3%p1%dm
+set t_Sb=^[[4%p1%dm
+endif
+
+
+The ^[ is entered as "<ctrl-v><esc>" 
+
+
+
+
+
+
+
+
+VimTip 26: Getting rid of ^M - mixing dos and unix
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=26
+
+If you work in a mixed environment you will often open files that have ^M's in them. An example would be this:
+
+------------------------------------------------------------------
+import java.util.Hashtable; ^M
+import java.util.Properties; ^Mimport java.io.IOException;
+import org.xml.sax.AttributeList; ^M
+import org.xml.sax.HandlerBase; ^Mimport org.xml.sax.SAXException;
+
+/**^M
+  * XMLHandler: This class parses the elements contained^M
+  * within a XML message and builds a Hashtable^M
+
+[snip]
+------------------------------------------------------------------
+
+Notice that some programs are not consistent in the way they insert the line breaks so you end up with some lines that have both a carrage return and a ^M and some lines that have a ^M and no carrage return (and so blend into one). There are two steps to clean this up.
+
+1. replace all extraneous ^M:
+
+:%s/^M$//g
+
+BE SURE YOU MAKE the ^M USING "CTRL-V CTRL-M" NOT BY TYPING "CARROT M"! This expression will replace all the ^M's that have carriage returns after them with nothing. (The dollar ties the search to the end of a line)
+
+2. replace all ^M's that need to have carriage returns:
+
+:%s/^M/\r/g
+
+Once again: BE SURE YOU MAKE the ^M USING "CTRL-V CTRL-M" NOT BY TYPING "CARROT M"! This expression will replace all the ^M's that didn't have carriage returns after them with a carriage return.
+
+Voila! Clean file. Map this to something if you do it frequently.
+
+:help ffs - for more info on file formats
+
+thanks to jonathan merz, douglas potts, and benji fisher
+
+
+
+
+
+
+
+VimTip 27: Convert hex to dec
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=27
+
+when you check the output of objdump, you'll confused by the $0xFFFFFFc operand, this function translate the hexcamal to decimal.
+function! Hex2Dec()
+    let lstr = getline(".")
+    let hexstr = matchstr(lstr, '0x[a-f0-9]\+')
+    while hexstr != ""
+        let hexstr = hexstr + 0
+        exe 's#0x[a-f0-9]\+#'.hexstr."#"
+        let lstr = substitute(lstr, '0x[a-f0-9]\+', hexstr, "")
+        let hexstr = matchstr(lstr, '0x[a-f0-9]\+')
+    endwhile
+endfunction
+usage:
+5,8call Hex2Dec()
+
+
+
+
+
+
+
+VimTip 28: add a line-number to every line without cat or awk alike utilities.
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=28
+
+With Unix-like environment, you can use cat or awk to generate a line number easily, because vim has a friendly interface with shell, so everything work in vim as well as it does in shell.
+:%!call -n
+or
+:%!awk '{print NR,$0}'
+
+But, if you use vim in MS-DOS, of win9x, win2000, you loss these tookit.
+here is a very simple way to archive this only by vim:
+fu! LineIt()
+  exe ":s/^/".line(".")."/"
+endf
+
+Well, a sequence composed with alphabet is as easy as above:
+  exe "s/^/".nr2char(line("."))."/"
+
+
+
+
+
+
+
+VimTip 29: reverse all the line with only 7 keystroke in vim
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=29
+
+:g/^/m0
+well, 
+1. : bring you to command-line mode(also known as ex-mode) from normal-mode(also known as command mode).
+2. g means you'll take an action through the whole file, generally perform a search, `v' also perform a search but it match the line not match the canonical expression.
+3. / begins the regular express
+4. ^ is a special character respect the start of a line.
+5. the second / ends the regular express and indicate that the remains is action to do.
+6. m means move, `t` and `co' for copy, `d' for delete
+7. 0 is the destination line.
+
+you can use 
+:g/regexp/t$
+to filter all lines and pick the match line together and copy them to the end of the buffer or
+:g/regexp/y A
+to put them into a register(not eax, ebx...)
+
+
+
+
+
+
+VimTip 30: Increasing or decreasing numbers
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=30
+
+To increase a number under or nearest to the right of the cursor, go to Normal mode and type:
+    Ctrl-A
+
+To decrease, type:
+    Ctrl-X
+
+Using this in a macro simplifies generating number sequences a lot.
+
+
+
+
+
+
+
+VimTip 31: Find and Replace
+http://vim-tips.sourceforge.net/tip.php?TIP_ID=31
+
+To find and replace one or more occurences of a given text pattern with a
+new text string, use the s[ubstitute] command.
+
+There are a variety of options, but these are what you most probably want:
+
+:%s/foo/bar/g           find each occurance of 'foo' and replace it with 'bar' without asking for confirmation
+
+:%s/foo/bar/gc          find each occurance of 'foo' and replace it with 'bar' asking for confirmation first
+
+:%s/\<foo\>/bar/gc      find (match exact word only) and replace each occurance of 'foo' with 'bar'
+
+:%s/foo/bar/gci         find (case insensitive) and replace each occurance of 'foo' with 'bar'
+
+:%s/foo/bar/gcI         find (case sensitive) and replace each occurance of 'foo' with 'bar'
+
+
+NB: Without the 'g' flag, replacement occurs only for the first occurrence in each line.
+
+For a full description and some more interesting examples of the substitute command refer to
+
+:help substitute
+
+See also:
+
+:help cmdline-ranges
+:help pattern
+:help gdefault
+
+
+
+
+
+
+
