@@ -1,6 +1,6 @@
 " File:  "totd.vim"
 " URL:  http://vim.sourceforge.net/script.php?script_id=88
-" LAST MODIFICATION: "Tue, 19 Nov 2002 16:17:43 Eastern Standard Time ()"
+" LAST MODIFICATION: "Wed, 20 Nov 2002 05:27:02 Eastern Standard Time ()"
 " Sourcing this script will display a "Tip Of The Day" when starting vim.
 " Requires:  Vim version 6.0 or later.
 "
@@ -102,7 +102,7 @@ fun! s:Install(rtDir)
   while top < bot
     let mid = (top + bot + 1)/2
     let midtag = matchstr(getline(mid), '[^\t]*')  " the tag on this line
-    if s:Strcmp(midtag, "vimtips.txt") < -1
+    if s:Strcmp(midtag, "vimtips.txt") < 0
       let top = mid
     else
       let bot = mid - 1
