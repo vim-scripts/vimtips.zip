@@ -67,18 +67,20 @@ fun! TipOfTheDay(file, force)
     call search('^VimTip\s\+\d\+:', 'w')
     " Save the new line number:
     let s:prevLine = line(".")
-    if winheight("%") < 3 " not enough room to split a window
-      resize 3	" +1 for the status line gives enough for two windows
-    endif
+    " Later, restore this buffer with :execute restore
+    let restore = "buffer " . bufnr("%")
     " Edit this file to update the persistent variables.
-    silent execute "1split" a:file
+    silent execute "edit" a:file
     setlocal modifiable noswapfile
+    let sbuf = bufnr("%") " buffer number of this script file
     " Update the values in the file.
     call s:SetPersistentNumber("prevLine", s:prevLine)
     call s:SetPersistentNumber("prevDate", s:prevDate)
     call s:SetPersistentNumber("vimtipsDate", s:vimtipsDate)
     silent write!
-    bwipe
+    " Return to the help window and delete the script buffer.
+    execute restore
+    execute "bwipe" sbuf
     " Position the tip at the top of the screen:
     normal! zt
   endif " v:errmsg == ""
@@ -91,11 +93,16 @@ endfun
 " Call this when the plugin is first installed, and after any time the user
 " runs :helptags to rebuild doc/tags .
 fun! s:Install(rtDir)
-  let buf0 = bufnr("%")
+  " Later, restore this buffer with :execute restore
+  if strlen(@%)	" This is not an empty buffer
+    let restore = "buffer " . bufnr("%")
+  else
+    let restore = "enew"
+  endif
   " Edit the tags file.
   execute "edit" a:rtDir . "/doc/tags"
   setlocal modifiable noswapfile
-  let buf1 = bufnr("%")
+  let tagbuf = bufnr("%")
   " binary search...
   let top = 0	" Invariant:  the vimtips line goes after top.
   let bot = line("$")
@@ -114,8 +121,8 @@ fun! s:Install(rtDir)
   call append(top, "vimtips.txt\t../plugin/vimtips/vimtips.txt\t/*vimtips.txt*")
   write!
   " Return to where we started and remove the extra buffer.
-  execute "buffer" buf0
-  execute "bwipeout" buf1
+  execute restore
+  execute "bwipeout" tagbuf
 endfun
 
 " Compare two strings by ASCII value:  suitable for binary search in a tags
@@ -141,9 +148,9 @@ fun! s:SetPersistentNumber(name, value)
   execute 's/=.*/=' a:value
 endfun
 
-let s:prevDate = 00000000
-let s:prevLine = 1
-let s:vimtipsDate = 00000000
+let s:prevDate = 20021122
+let s:prevLine = 3
+let s:vimtipsDate = 20021122
 
 let &l:cpo = s:save_cpo
 
