@@ -6,7 +6,7 @@ VimTip 0: downloading Vim tips
 installed the "Tip of the Day" script, totd.vim .  Congratulations!  You can
 now replace this skeleton file with a real vimtips.txt file downloaded from
 >
-	http://vim.sourceforge.net/tip_download.php
+	http://www.vim.org/tips/tip_download.php
 <
      If you have not yet installed the totd.vim plugin, check that it is in
 the plugin/ directory.  (This file should be in plugin/vimtips/ .)  Then

@@ -22,7 +22,7 @@ Benji Fisher <benji@member.AMS.org>
 tip, configure how often to show tips, ...) or suggest an improvement to the
 script.  If you want more choices in downloading tips, see the contact
 information at >
-	http://vimonline.sourceforge.net/
+	http://www.vim.org/
 
 Installation:						*totd-installation*
 ============

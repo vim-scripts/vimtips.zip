@@ -5,14 +5,14 @@
 " Requires:  Vim version 6.0 or later.
 "
 " A skeleton file vimtips.txt should be included with this file.  You should
-" be able to download an updated version from http://vim.sf.net .
+" be able to download an updated version from
+" http://www.vim.org/tips/tip_download.php .
 "
 " Installation:  See doc/totd.txt, packaged with this file.
 
 " TODO Make it fault-tolerant:  test for filereadable("vimtips.txt")
 " Remind the user how to turn this feature off.
 " Enable random selection of a tip.
-" If requested:  add a :Tip command or menu item.
 
 " Prevent duplicate loading.
 if exists("loaded_totd")
@@ -148,8 +148,8 @@ fun! s:SetPersistentNumber(name, value)
   execute 's/=.*/=' a:value
 endfun
 
-let s:prevDate = 20021122
-let s:prevLine = 3
+let s:prevDate = 20060406
+let s:prevLine = 1
 let s:vimtipsDate = 20021122
 
 let &l:cpo = s:save_cpo
