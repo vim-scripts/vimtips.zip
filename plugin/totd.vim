@@ -1,6 +1,6 @@
 " File:  "totd.vim"
 " URL:  http://vim.sourceforge.net/script.php?script_id=88
-" LAST MODIFICATION: "Wed, 20 Nov 2002 05:27:02 Eastern Standard Time ()"
+" LAST MODIFICATION: "Wed, 19 Nov 2006"
 " Sourcing this script will display a "Tip Of The Day" when starting vim.
 " Requires:  Vim version 6.0 or later.
 "
@@ -71,7 +71,7 @@ fun! TipOfTheDay(file, force)
     let restore = "buffer " . bufnr("%")
     " Edit this file to update the persistent variables.
     silent execute "edit" a:file
-    setlocal modifiable noswapfile
+    setlocal modifiable noswapfile linebreak
     let sbuf = bufnr("%") " buffer number of this script file
     " Update the values in the file.
     call s:SetPersistentNumber("prevLine", s:prevLine)
@@ -145,10 +145,10 @@ fun! s:SetPersistentNumber(name, value)
   if !search('^\s*let\s\+s:' . a:name . '\s*=', 'bW')
     return 1
   endif
-  execute 's/=.*/=' a:value
+  silent execute 's/=.*/=' a:value
 endfun
 
-let s:prevDate = 20060406
+let s:prevDate = 20060719
 let s:prevLine = 1
 let s:vimtipsDate = 20021122
 
